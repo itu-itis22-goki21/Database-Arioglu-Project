@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Medal Page</title>
+</head>
+<body>
+    <h1>Medal Table</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Code</th>
+            <th>Short Name</th>
+            <th>Name</th>
+            <th>Sex</th>
+            <th>Event</th>
+            <th>Counrty</th>
+            <th>Counrty CODE</th>
+        </tr>
+        {% for medal in medals %}
+        <tr>
+            <td>{{ medals.medal_id }}</td>
+            <td>{{ medals.medal_type }}</td>
+            <td>{{ medals.medal_code }}</td>
+            <td>{{ medals.athlete_short_name }}</td>
+            <td>{{ medals.athlete_name }}</td>
+            <td>{{ medals.athlete_sex}}</td>
+            <td>{{ medals.event }}</td>
+            <td>{{ medals.country }}</td>
+            <td>{{ medals.country_code }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
