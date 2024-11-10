@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Officials</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .button-container button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .button-container button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Technical Officials</h1>
+
+    <div class="button-style">
+        <button onclick="window.location.href='/insert'">Insert</button>
+        <button onclick="window.location.href='/update'">Update</button>
+        <button onclick="window.location.href='/delete'">Delete</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tech_ID</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Birth_Date</th>
+                <th>Country</th>
+                <th>Country_Code</th>
+                <th>discipline</th>
+                <th>Function</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows for each coach will be dynamically added here in Flask -->
+            {% for official in tech_officials %}
+            <tr>
+                <td>{{ official.tech_id }}</td>
+                <td>{{ official.name }}</td>
+                <td>{{ official.gender }}</td>
+                <td>{{ official.birth_date }}</td>
+                <td>{{ official.country }}</td>
+                <td>{{ official.country_code }}</td>
+                <td>{{ official.discipline }}</td>
+                <td>{{ official.function }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>
