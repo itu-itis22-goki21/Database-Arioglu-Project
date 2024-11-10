@@ -19,15 +19,15 @@
         </tr>
         {% for medal in medals %}
         <tr>
-            <td>{{ medals.medal_id }}</td>
-            <td>{{ medals.medal_type }}</td>
-            <td>{{ medals.medal_code }}</td>
-            <td>{{ medals.athlete_short_name }}</td>
-            <td>{{ medals.athlete_name }}</td>
-            <td>{{ medals.athlete_sex}}</td>
-            <td>{{ medals.event }}</td>
-            <td>{{ medals.country }}</td>
-            <td>{{ medals.country_code }}</td>
+            <td>{{ medal.medal_id }}</td>
+            <td>{{ medal.medal_type }}</td>
+            <td>{{ medal.medal_code }}</td>
+            <td>{{ medal.athlete_short_name }}</td>
+            <td>{{ medal.athlete_name }}</td>
+            <td>{{ medal.athlete_sex}}</td>
+            <td>{{ medal.event }}</td>
+            <td>{{ medal.country }}</td>
+            <td>{{ medal.country_code }}</td>
         </tr>
         {% endfor %}
     </table>

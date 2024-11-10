@@ -31,20 +31,10 @@ def cocahes():
 @app.route("/medal")
 def medal_page():
     conn = get_db_connection()
-
-
-
-
     cursor = conn.cursor(dictionary=True)
     cursor.execute("SELECT * FROM medal")  # Ensure that the table name is correct
-    medals = cursor.fetchall()
-
-
-        
+    medals = cursor.fetchall() 
     cursor.close()
-
-
-    
     conn.close()
 
 
@@ -55,7 +45,7 @@ def techpage():
     # Connect to the database and retrieve tech_officials data
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM tech_officials")
+    cursor.execute("SELECT * FROM tech_of")
     tech_officials = cursor.fetchall()
     cursor.close()
     conn.close()

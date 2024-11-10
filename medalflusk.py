@@ -1,8 +1,19 @@
+from flask import Flask, render_template
+import mysql.connector
 
+app = Flask(__name__)
 
+# MySQL connection configuration
+db_config = {
+    'user': 'root',
+    'password': 'admin',
+    'host': 'localhost',
+    'database': "test"
+}
+def get_db_connection():
+    return mysql.connector.connect(**db_config)
 
-
-@app.route("/medal")
+@app.route("/")
 def medal_page():
     conn = get_db_connection()
 
@@ -23,4 +34,5 @@ def medal_page():
 
 
     return render_template("medals.html", medals=medals)
-
+if __name__ == '__main__':
+    app.run(debug=True)
