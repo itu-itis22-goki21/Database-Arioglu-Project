@@ -16,6 +16,16 @@ db_config = {
 def get_db_connection():
     return mysql.connector.connect(**db_config)
 
+
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return render_template('homepage.html')
+
+
+
 @app.route('/coaches')
 def coaches():
     # Connect to the database and retrieve coaches data
@@ -49,7 +59,7 @@ def country():
     return render_template('country.html', countries=countries)
 
 @app.route("/medal")
-def medal_page():
+def medal():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute("SELECT * FROM medal ORDER BY athlete_short_name")  # Ensure that the table name is correct
@@ -61,7 +71,7 @@ def medal_page():
     return render_template("medals.html", medals=medals)
 
 @app.route('/tech')
-def techpage():
+def tech():
     # Connect to the database and retrieve tech_officials data
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -90,7 +100,7 @@ def athletes():
     conn.close()
     
     # Render the coaches page with the fetched data
-    return render_template('athletes.html', athleties=athleties)
+    return render_template('athletes.html', athletes=athleties)
 
 if __name__ == '__main__':
     app.run(debug=True)
