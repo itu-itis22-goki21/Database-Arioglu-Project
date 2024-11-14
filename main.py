@@ -28,6 +28,19 @@ def cocahes():
     # Render the coaches page with the fetched data
     return render_template('coaches.html', coaches=coaches)
 
+@app.route('/country')
+def cocahes():
+    # Connect to the database and retrieve coaches data
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM country")
+    countries = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    
+    # Render the coaches page with the fetched data
+    return render_template('countries.html', countries=countries)
+
 @app.route("/medal")
 def medal_page():
     conn = get_db_connection()
