@@ -106,7 +106,10 @@
                 <p><strong>Sex:</strong> {{ medal.athlete_sex }}</p>
                 <p><strong>Event:</strong> {{ medal.event }}</p>
                 <p><strong>Country:</strong> {{ medal.country }}</p>
-                <p><strong>Country Code:</strong> {{ medal.country_code }}</p>
+
+                <p><strong>Country_code:</strong> <a href="{{ url_for('country') }}?country={{ medal.country_code }}">{{ medal.country_code }}</a></p>
+                
+               
             </div>
         </div>
         {% endfor %}

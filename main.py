@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 import mysql.connector
+from flask import request
 
 app = Flask(__name__)
 
@@ -16,7 +17,7 @@ def get_db_connection():
     return mysql.connector.connect(**db_config)
 
 @app.route('/coaches')
-def cocahes():
+def coaches():
     # Connect to the database and retrieve coaches data
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -28,24 +29,30 @@ def cocahes():
     # Render the coaches page with the fetched data
     return render_template('coaches.html', coaches=coaches)
 
-@app.route('/country')
-def cocahes():
+@app.route('/country', methods=['GET'])
+def country():
+    
+    country = request.args.get('country')
     # Connect to the database and retrieve coaches data
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM country")
+
+    if country:
+        cursor.execute("SELECT * FROM country WHERE country_code = %s", (country,))
+    else:
+        cursor.execute("SELECT * FROM country")
     countries = cursor.fetchall()
     cursor.close()
     conn.close()
     
     # Render the coaches page with the fetched data
-    return render_template('countries.html', countries=countries)
+    return render_template('country.html', countries=countries)
 
 @app.route("/medal")
 def medal_page():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM medal")  # Ensure that the table name is correct
+    cursor.execute("SELECT * FROM medal ORDER BY athlete_short_name")  # Ensure that the table name is correct
     medals = cursor.fetchall() 
     cursor.close()
     conn.close()
@@ -66,5 +73,26 @@ def techpage():
     # Render the tech_officials page with the fetched data
     return render_template('tech_officials.html', tech_officials=tech_officials)
 
+@app.route('/athletes', methods=['GET'])
+def athletes():
+    
+    athletes = request.args.get('athletes')
+    # Connect to the database and retrieve coaches data
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    if athletes:
+        cursor.execute("SELECT * FROM athletes WHERE name = %s", (athletes,))
+    else:
+        cursor.execute("SELECT * FROM athletes")
+    athleties = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    
+    # Render the coaches page with the fetched data
+    return render_template('athletes.html', athleties=athleties)
+
 if __name__ == '__main__':
     app.run(debug=True)
+
+

@@ -100,7 +100,7 @@
         {% for country in countries %}
         <div class="country-card" onclick="openModal('modal-{{ loop.index }}')">
             <div class="country-name">{{ country.Country_code }}</div>
-            <div class="country-rank">{{ country.Rank }}</div>
+            <div class="country-rank">{{ country.order_of }}</div>
         </div>
 
         <!-- Modal Overlay for each country -->
@@ -112,7 +112,7 @@
                 <p><strong>Silver:</strong> {{ country.Silver }}</p>
                 <p><strong>Bronze:</strong> {{ country.Bronze }}</p>
                 <p><strong>Total:</strong> {{ country.Total }}</p>
-                <p><strong>Rank:</strong> {{ country.Rank }}</p>
+                <p><strong>Rank:</strong> {{ country.order_of }}</p>
             </div>
         </div>
         {% endfor %}
