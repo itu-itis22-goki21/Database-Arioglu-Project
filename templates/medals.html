@@ -2,34 +2,114 @@
 <html>
 <head>
     <title>Medal Page</title>
+    <style>
+        html{
+            background-color: aqua;
+        }
+        /* Flexbox container */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+        h1 {
+            text-align: center;
+            color: #8c8484;
+        }
+        /* Medal box styling */
+        .medal-box {
+            border: 1px solid #ddd;
+            padding: 15px;
+            width: 200px;
+            cursor: pointer;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+        .medal-box:hover{
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            background-color: #e9e9e9;
+        }
+        .medal-type {
+            font-weight: bold;
+        }
+        .athlete-name {
+            margin-top: 5px;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Transparent gray background */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        /* Modal content styling */
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            width: 300px;
+            max-width: 90%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        /* Close button styling */
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
+    </style>
+    <script>
+        function openModal(id) {
+            const modal = document.getElementById('modal-' + id);
+            modal.style.display = 'flex';  // Show the modal
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById('modal-' + id);
+            modal.style.display = 'none';  // Hide the modal
+        }
+    </script>
 </head>
 <body>
     <h1>Medal Table</h1>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Type</th>
-            <th>Code</th>
-            <th>Short Name</th>
-            <th>Name</th>
-            <th>Sex</th>
-            <th>Event</th>
-            <th>Counrty</th>
-            <th>Counrty CODE</th>
-        </tr>
+    <div class="container">
         {% for medal in medals %}
-        <tr>
-            <td>{{ medal.medal_id }}</td>
-            <td>{{ medal.medal_type }}</td>
-            <td>{{ medal.medal_code }}</td>
-            <td>{{ medal.athlete_short_name }}</td>
-            <td>{{ medal.athlete_name }}</td>
-            <td>{{ medal.athlete_sex}}</td>
-            <td>{{ medal.event }}</td>
-            <td>{{ medal.country }}</td>
-            <td>{{ medal.country_code }}</td>
-        </tr>
+        <div class="medal-box" onclick="openModal('{{ medal.medal_id }}')">
+            <div class="medal-type">{{ medal.medal_type }}</div>
+            <div class="athlete-name">{{ medal.athlete_name }}</div>
+        </div>
+
+        <!-- Modal Overlay for each medal -->
+        <div class="modal-overlay" id="modal-{{ medal.medal_id }}" onclick="closeModal('{{ medal.medal_id }}')">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <span class="close-button" onclick="closeModal('{{ medal.medal_id }}')">&times;</span>
+                <p><strong>Medal Type:</strong> {{ medal.medal_type }}</p>
+                <p><strong>Code:</strong> {{ medal.medal_code }}</p>
+                <p><strong>Short Name:</strong> {{ medal.athlete_short_name }}</p>
+                <p><strong>Name:</strong> {{ medal.athlete_name }}</p>
+                <p><strong>Sex:</strong> {{ medal.athlete_sex }}</p>
+                <p><strong>Event:</strong> {{ medal.event }}</p>
+                <p><strong>Country:</strong> {{ medal.country }}</p>
+                <p><strong>Country Code:</strong> {{ medal.country_code }}</p>
+            </div>
+        </div>
         {% endfor %}
-    </table>
+    </div>
 </body>
 </html>
