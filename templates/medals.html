@@ -90,24 +90,24 @@
     <h1>Medal Table</h1>
     <div class="container">
         {% for medal in medals %}
-        <div class="medal-box" onclick="openModal('{{ medal.medal_id }}')">
-            <div class="medal-type">{{ medal.medal_type }}</div>
-            <div class="athlete-name">{{ medal.athlete_name }}</div>
+        <div class="medal-box" onclick="openModal('{{ medal.Medal_id }}')">
+            <div class="medal-type">{{ medal.Medal_type }}</div>
+            <div class="athlete-name">{{ medal.Name }}</div>
         </div>
 
         <!-- Modal Overlay for each medal -->
-        <div class="modal-overlay" id="modal-{{ medal.medal_id }}" onclick="closeModal('{{ medal.medal_id }}')">
+        <div class="modal-overlay" id="modal-{{ medal.Medal_id }}" onclick="closeModal('{{ medal.Medal_id }}')">
             <div class="modal-content" onclick="event.stopPropagation()">
-                <span class="close-button" onclick="closeModal('{{ medal.medal_id }}')">&times;</span>
-                <p><strong>Medal Type:</strong> {{ medal.medal_type }}</p>
-                <p><strong>Code:</strong> {{ medal.medal_code }}</p>
-                <p><strong>Short Name:</strong> {{ medal.athlete_short_name }}</p>
-                <p><strong>Name:</strong> {{ medal.athlete_name }}</p>
-                <p><strong>Sex:</strong> {{ medal.athlete_sex }}</p>
-                <p><strong>Event:</strong> {{ medal.event }}</p>
-                <p><strong>Country:</strong> {{ medal.country }}</p>
+                <span class="close-button" onclick="closeModal('{{ medal.Medal_id }}')">&times;</span>
+                <p><strong>Medal Type:</strong> {{ medal.Medal_type }}</p>
+                <p><strong>Code:</strong> {{ medal.Medal_code }}</p>
+                <p><strong>Short Name:</strong> {{ medal.Athlete_short_name }}</p>
+                <p><strong>Name:</strong> {{ medal.Name }}</p>
+                <p><strong>Sex:</strong> {{ medal.Athlete_sex }}</p>
+                <p><strong>Event:</strong> {{ medal.Event_stage }}</p>
+                <p><strong>Country:</strong> {{ medal.Country }}</p>
 
-                <p><strong>Country_code:</strong> <a href="{{ url_for('country') }}?country={{ medal.country_code }}">{{ medal.country_code }}</a></p>
+                <p><strong>Country_code:</strong> <a href="{{ url_for('country') }}?country={{ medal.Country_code }}">{{ medal.Country_code }}</a></p>
                 
                
             </div>

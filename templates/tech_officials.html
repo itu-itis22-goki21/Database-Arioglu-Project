@@ -95,23 +95,23 @@
 
     <div class="container">
         {% for official in tech_officials %}
-        <div class="official-card" onclick="openModal('{{ official.tech_id }}')">
-            <div class="official-name">{{ official.name }}</div>
-            <div class="official-function">{{ official.function }}</div>
+        <div class="official-card" onclick="openModal('{{ official.Tech_id }}')">
+            <div class="official-name">{{ official.Tech_name }}</div>
+            <div class="official-function">{{ official.Function }}</div>
         </div>
 
         <!-- Modal Overlay for each official -->
-        <div class="modal-overlay" id="modal-{{ official.tech_id }}" onclick="closeModal('{{ official.tech_id }}')">
+        <div class="modal-overlay" id="modal-{{ official.Tech_id }}" onclick="closeModal('{{ official.Tech_id }}')">
             <div class="modal-content" onclick="event.stopPropagation()">
-                <span class="close-button" onclick="closeModal('{{ official.tech_id }}')">&times;</span>
-                <p><strong>Tech ID:</strong> {{ official.tech_id }}</p>
-                <p><strong>Name:</strong> {{ official.name }}</p>
-                <p><strong>Gender:</strong> {{ official.gender }}</p>
-                <p><strong>Birth Date:</strong> {{ official.birth_date }}</p>
-                <p><strong>Country:</strong> {{ official.country }}</p>
-                <p><strong>Country Code:</strong> {{ official.country_code }}</p>
-                <p><strong>Discipline:</strong> {{ official.discipline }}</p>
-                <p><strong>Function:</strong> {{ official.function }}</p>
+                <span class="close-button" onclick="closeModal('{{ official.Tech_id }}')">&times;</span>
+                <p><strong>Tech ID:</strong> {{ official.Tech_id }}</p>
+                <p><strong>Name:</strong> {{ official.Tech_name }}</p>
+                <p><strong>Gender:</strong> {{ official.Gender }}</p>
+                <p><strong>Birth Date:</strong> {{ official.Birth_date }}</p>
+                <p><strong>Country:</strong> {{ official.Country }}</p>
+                <p><strong>Country Code:</strong> {{ official.Country_code }}</p>
+                <p><strong>Discipline:</strong> {{ official.Discipline }}</p>
+                <p><strong>Function:</strong> {{ official.Function }}</p>
             </div>
         </div>
         {% endfor %}

@@ -98,7 +98,7 @@
     <div class="container">
         {% for athlete in athletes %}
         <div class="coach-card" onclick="openModal('modal-{{ loop.index }}')">
-            <div class="coach-name">{{ athlete.name }}</div>
+            <div class="coach-name">{{ athlete.Athletes_name }}</div>
             
         </div>
 
@@ -106,13 +106,13 @@
         <div class="modal-overlay" id="modal-{{ loop.index }}" onclick="closeModal('modal-{{ loop.index }}')">
             <div class="modal-content" onclick="event.stopPropagation()">
                 <span class="close-button" onclick="closeModal('modal-{{ loop.index }}')">&times;</span>
-                <p><strong>Name:</strong> {{ athlete.name }}</p>
-                <p><strong>Short_name:</strong> {{ athlete.short_name }}</p>
-                <p><strong>Gender:</strong> {{ athlete.gender }}</p>
-                <p><strong>Birth Place:</strong> {{ athlete.birth_place }}</p>
-                <p><strong>Birth Country:</strong> {{ athlete.birth_country }}</p>
-                <p><strong>Country Code:</strong> <a href="{{ url_for('country') }}?country={{ athlete.country_code }}">{{ athlete.country_code }}</a></p>
-                <p><strong>Discipline:</strong> {{ athlete.discipline}}</p>
+                <p><strong>Name:</strong> {{ athlete.Athletes_name }}</p>
+                <p><strong>Short_name:</strong> {{ athlete.Short_name }}</p>
+                <p><strong>Gender:</strong> {{ athlete.Gender }}</p>
+                <p><strong>Birth Place:</strong> {{ athlete.Birth_place }}</p>
+                <p><strong>Birth Country:</strong> {{ athlete.Birth_country }}</p>
+                <p><strong>Country Code:</strong> <a href="{{ url_for('country') }}?country={{ athlete.Country_code }}">{{ athlete.Country_code }}</a></p>
+                <p><strong>Discipline:</strong> {{ athlete.Discipline}}</p>
             </div>
         </div>
         {% endfor %}

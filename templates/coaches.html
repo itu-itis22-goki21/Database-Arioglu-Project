@@ -98,20 +98,20 @@
     <div class="container">
         {% for coach in coaches %}
         <div class="coach-card" onclick="openModal('modal-{{ loop.index }}')">
-            <div class="coach-name">{{ coach.name }}</div>
-            <div class="coach-function">{{ coach.function }}</div>
+            <div class="coach-name">{{ coach.Coach_name }}</div>
+            <div class="coach-function">{{ coach.Function }}</div>
         </div>
 
         <!-- Modal Overlay for each coach -->
         <div class="modal-overlay" id="modal-{{ loop.index }}" onclick="closeModal('modal-{{ loop.index }}')">
             <div class="modal-content" onclick="event.stopPropagation()">
                 <span class="close-button" onclick="closeModal('modal-{{ loop.index }}')">&times;</span>
-                <p><strong>Name:</strong> {{ coach.name }}</p>
-                <p><strong>Gender:</strong> {{ coach.gender }}</p>
-                <p><strong>Birth Date:</strong> {{ coach.birth_date }}</p>
-                <p><strong>Country:</strong> {{ coach.country }}</p>
-                <p><strong>Discipline:</strong> {{ coach.discipline }}</p>
-                <p><strong>Function:</strong> {{ coach.function }}</p>
+                <p><strong>Name:</strong> {{ coach.Coach_name }}</p>
+                <p><strong>Gender:</strong> {{ coach.Gender }}</p>
+                <p><strong>Birth Date:</strong> {{ coach.Birth_date }}</p>
+                <p><strong>Country:</strong> {{ coach.Country_code }}</p>
+                <p><strong>Discipline:</strong> {{ coach.Discipline }}</p>
+                <p><strong>Function:</strong> {{ coach.Function }}</p>
             </div>
         </div>
         {% endfor %}
