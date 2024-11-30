@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Countries List</title>
+    <title>Events List</title>
     <style>
-        html{
-            background-color: firebrick;
+        html {
+            background-color: midnightblue;
         }
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            color: white;
         }
         h1 {
             text-align: center;
-            color: #333;
+            color: #fff;
         }
         .container {
             display: flex;
@@ -22,28 +23,29 @@
             gap: 20px;
             justify-content: center;
         }
-        .country-card {
+        .event-card {
             border: 1px solid #ddd;
             padding: 15px;
-            width: 200px;
+            width: 250px;
             cursor: pointer;
             border-radius: 8px;
-            background-color: #f9f9f9;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #222;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
         }
-        .country-card:hover {
+        .event-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-            background-color: #e9e9e9;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            background-color: #333;
         }
-        .country-name {
+        .event-title {
             font-weight: bold;
             margin-bottom: 5px;
+            color: #00bfff;
         }
-        .country-rank {
-            color: #555;
+        .event-status {
+            color: #ccc;
             font-size: 14px;
         }
         .modal-overlay {
@@ -53,13 +55,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
             justify-content: center;
             align-items: center;
             z-index: 1000;
         }
         .modal-content {
             background: white;
+            color: black;
             padding: 20px;
             border-radius: 5px;
             width: 300px;
@@ -94,25 +97,24 @@
 </head>
 <body>
 
-    <h1>Countries List</h1>
+    <h1>Events List</h1>
 
     <div class="container">
-        {% for country in countries %}
-        <div class="country-card" onclick="openModal('modal-{{ loop.index }}')">
-            <div class="country-name">{{ country.Country_code }}</div>
-            <div class="country-rank">{{ country.Rank }}</div>
+        {% for event in events %}
+        <div class="event-card" onclick="openModal('modal-{{ loop.index }}')">
+            <div class="event-title">{{ event.Event_stage }}</div>
+            <div class="event-status">Status: {{ event.Event_status }}</div>
         </div>
 
-        <!-- Modal Overlay for each country -->
+        <!-- Modal Overlay for each event -->
         <div class="modal-overlay" id="modal-{{ loop.index }}" onclick="closeModal('modal-{{ loop.index }}')">
             <div class="modal-content" onclick="event.stopPropagation()">
                 <span class="close-button" onclick="closeModal('modal-{{ loop.index }}')">&times;</span>
-                <p><strong>Country Code:</strong> {{ country.Country_code }}</p>
-                <p><strong>Gold:</strong> {{ country.Gold }}</p>
-                <p><strong>Silver:</strong> {{ country.Silver }}</p>
-                <p><strong>Bronze:</strong> {{ country.Bronze }}</p>
-                <p><strong>Total:</strong> {{ country.Total }}</p>
-                <p><strong>Rank:</strong> {{ country.Rank }}</p>
+                <p><strong>Event Stage:</strong> {{ event.Event_stage }}</p>
+                <p><strong>Location:</strong> {{ event.Location }}</p>
+                <p><strong>Status:</strong> {{ event.Event_status }}</p>
+                <p><strong>Time:</strong> {{ event.Time }}</p>
+                <p><strong>Discipline:</strong> {{ event.Discipline }}</p>
             </div>
         </div>
         {% endfor %}

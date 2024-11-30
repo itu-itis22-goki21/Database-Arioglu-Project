@@ -7,9 +7,9 @@ app = Flask(__name__)
 # MySQL connection configuration
 db_config = {
     'user': 'root',
-    'password': 'admin',
+    'password': 'Qweasdqwe123.',
     'host': 'localhost',
-    'database': "test"
+    'database': "database_final"
 }
 
 # Function to connect to the MySQL database
@@ -102,6 +102,33 @@ def athletes():
     # Render the coaches page with the fetched data
     return render_template('athletes.html', athletes=athleties)
 
+@app.route('/discipline', methods=['GET'])
+def discipline():
+    discipline_name = request.args.get('discipline')
+    # Connect to the database and retrieve disciplines data
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    if discipline_name:
+        cursor.execute("SELECT * FROM discipline WHERE Discipline = %s", (discipline_name,))
+    else:
+        cursor.execute("SELECT * FROM discipline")
+    disciplines = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    
+    return render_template('discipline.html', disciplines=disciplines)
+
+@app.route('/events', methods=['GET'])
+def events():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM events_")  # Ensure table name matches
+    events = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    
+    return render_template('events.html', events=events)
 if __name__ == '__main__':
     app.run(debug=True)
 
