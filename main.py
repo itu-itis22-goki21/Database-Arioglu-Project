@@ -107,6 +107,37 @@ def delete_country():
     conn.close()
     return redirect(url_for('country')) # No content response
 
+@app.route('/insert_country', methods=['POST'])
+def insert_country():
+    # Retrieve form data
+    country_code = request.form.get('country')
+    gold = int(request.form.get('gold'))
+    silver = int(request.form.get('silver'))
+    bronze = int(request.form.get('bronze'))
+    rank = int(request.form.get('rank'))
+    
+    # Calculate total medals
+    total = gold + silver + bronze
+
+    # Connect to the database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+        # Insert data into the database
+    query = """
+    INSERT INTO country (Country_code, Gold, Silver, Bronze, Total, country.Rank)
+    VALUES (%s, %s, %s, %s, %s, %s)
+    """
+    cursor.execute(query, (country_code, gold, silver, bronze, total, rank))
+    conn.commit()
+
+        # Close the database connection
+    cursor.close()
+    conn.close()
+
+        # Redirect back to the countries page
+    return "<script>alert('Country added successfully!'); window.location.href='/country';</script>"
+
 
 @app.route("/medal")
 def medal():
@@ -131,6 +162,37 @@ def delete_medal():
     cursor.close()
     conn.close()
     return redirect(url_for('medal')) # No content response
+
+@app.route('/insert_medal', methods=['POST'])
+def insert_medal():
+    # Retrieve form data
+    Medal_type = request.form.get('medal_type')
+    Medal_code = request.form.get('medal_code')
+    Athlete_short_name = request.form.get('athlete_short_name')
+    Athlete_name = request.form.get('athlete_name')
+    Athlete_sex = request.form.get('athlete_sex')
+    Event_stage = request.form.get('event_stage')
+    Country = request.form.get('country')
+    Country_code = request.form.get('country_code')
+
+    # Connect to the database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Insert data into the database
+    query = """
+    INSERT INTO medal (Medal_type, Medal_code, Athlete_short_name, Name, Athlete_sex, Event_stage, Country, Country_code)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+    """
+    cursor.execute(query, (Medal_type, Medal_code, Athlete_short_name, Athlete_name, Athlete_sex, Event_stage, Country, Country_code))
+    conn.commit()
+
+    # Close the database connection
+    cursor.close()
+    conn.close()
+
+    # Redirect back to the medals page with a success message
+    return "<script>alert('Medal added successfully!'); window.location.href='/medal';</script>"
 
 
 @app.route('/tech')
@@ -218,6 +280,39 @@ def delete_athlete():
     conn.close()
     return redirect(url_for('athletes')) # No content response
 
+@app.route('/insert_athlete', methods=['POST'])
+def insert_athlete():
+    # Retrieve form data
+    Athlete_name = request.form.get('athlete_name')
+    Short_name = request.form.get('short_name')
+    Gender = request.form.get('gender')
+    Birth_place = request.form.get('birth_place')
+    Birth_country = request.form.get('birth_country')
+    Country_code = request.form.get('country_code')
+    Discipline = request.form.get('discipline')
+
+
+    
+
+    # Connect to the database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+        # Insert data into the database
+    query = """
+    INSERT INTO athletes (Athlete_name, Short_name, Gender, Birth_place, Birth_country, Country_code,Discipline)
+    VALUES (%s, %s, %s, %s, %s, %s,%s)
+    """
+    cursor.execute(query, (Athlete_name, Short_name, Gender, Birth_place,Birth_country, Country_code,Discipline))
+    conn.commit()
+
+        # Close the database connection
+    cursor.close()
+    conn.close()
+
+        # Redirect back to the countries page
+    return "<script>alert('Country added successfully!'); window.location.href='/athletes';</script>"
+
 
 @app.route('/discipline', methods=['GET'])
 def discipline():
@@ -247,6 +342,37 @@ def delete_discipline():
     cursor.close()
     conn.close()
     return redirect(url_for('discipline')) # No content response
+
+@app.route('/insert_discipline', methods=['POST'])
+def insert_discipline():
+    # Retrieve form data
+    discipline = request.form.get('discipline')
+    F = int(request.form.get('F'))
+    M = int(request.form.get('M'))
+    
+    
+    
+    # Calculate total medals
+    Total = F + M
+
+    # Connect to the database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+        # Insert data into the database
+    query = """
+    INSERT INTO discipline (Discipline, F, M, Total)
+    VALUES (%s, %s, %s, %s)
+    """
+    cursor.execute(query, (discipline, F, M, Total))
+    conn.commit()
+
+        # Close the database connection
+    cursor.close()
+    conn.close()
+
+        # Redirect back to the countries page
+    return "<script>alert('Discipline added successfully!'); window.location.href='/discipline';</script>"
 
 
 @app.route('/events', methods=['GET'])
