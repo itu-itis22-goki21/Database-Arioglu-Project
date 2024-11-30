@@ -115,6 +115,9 @@
                 <p><strong>Status:</strong> {{ event.Event_status }}</p>
                 <p><strong>Time:</strong> {{ event.Time }}</p>
                 <p><strong>Discipline:</strong> {{ event.Discipline }}</p>
+                <form action="{{ url_for('delete_event') }}?events={{ event.Event_stage }}" method="post">
+                    <button href="{{ url_for('events')}}"style="color: red;">Delete</button>
+                </form>
             </div>
         </div>
         {% endfor %}

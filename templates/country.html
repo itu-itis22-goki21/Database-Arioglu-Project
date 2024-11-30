@@ -113,6 +113,9 @@
                 <p><strong>Bronze:</strong> {{ country.Bronze }}</p>
                 <p><strong>Total:</strong> {{ country.Total }}</p>
                 <p><strong>Rank:</strong> {{ country.Rank }}</p>
+                <form action="{{ url_for('delete_country') }}?country={{ country.Country_code }}" method="post">
+                    <button href="{{ url_for('country')}}"style="color: red;">Delete</button>
+                </form>
             </div>
         </div>
         {% endfor %}

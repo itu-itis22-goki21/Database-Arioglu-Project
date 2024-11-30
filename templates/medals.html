@@ -108,7 +108,11 @@
                 <p><strong>Country:</strong> {{ medal.Country }}</p>
 
                 <p><strong>Country_code:</strong> <a href="{{ url_for('country') }}?country={{ medal.Country_code }}">{{ medal.Country_code }}</a></p>
-                
+
+                <form action="{{ url_for('delete_medal') }}?medal={{ medal.Medal_id }}" method="post">
+                    <button href="{{ url_for('medal')}}"style="color: red;">Delete</button>
+
+                </form>
                
             </div>
         </div>

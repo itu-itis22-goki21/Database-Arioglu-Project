@@ -112,6 +112,9 @@
                 <p><strong>Country Code:</strong> {{ official.Country_code }}</p>
                 <p><strong>Discipline:</strong> {{ official.Discipline }}</p>
                 <p><strong>Function:</strong> {{ official.Function }}</p>
+                <form action="{{ url_for('delete_tech') }}?tech={{ official.Tech_id }}" method="post">
+                    <button href="{{ url_for('tech')}}"style="color: red;">Delete</button>
+                </form>
             </div>
         </div>
         {% endfor %}

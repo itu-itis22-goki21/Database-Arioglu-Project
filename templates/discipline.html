@@ -114,6 +114,9 @@
                 <p><strong>Female:</strong> {{ discipline.F }}</p>
                 <p><strong>Male:</strong> {{ discipline.M }}</p>
                 <p><strong>Total:</strong> {{ discipline.Total }}</p>
+                <form action="{{ url_for('delete_discipline') }}?discipline={{ discipline.Discipline }}" method="post">
+                    <button href="{{ url_for('discipline')}}"style="color: red;">Delete</button>
+                </form>
             </div>
         </div>
         {% endfor %}

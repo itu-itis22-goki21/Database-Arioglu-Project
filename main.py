@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 import mysql.connector
 from flask import request
 
@@ -7,9 +7,9 @@ app = Flask(__name__)
 # MySQL connection configuration
 db_config = {
     'user': 'root',
-    'password': 'Qweasdqwe123.',
+    'password': 'admin',
     'host': 'localhost',
-    'database': "database_final"
+    'database': "test"
 }
 
 # Function to connect to the MySQL database
@@ -39,6 +39,18 @@ def coaches():
     # Render the coaches page with the fetched data
     return render_template('coaches.html', coaches=coaches)
 
+@app.route('/delete_coaches>', methods=['POST'])
+def delete_coaches():
+    Coach_name = request.args.get('coaches')
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM coaches WHERE Coach_name = %s", (Coach_name,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return redirect(url_for('coaches'))
+
 @app.route('/country', methods=['GET'])
 def country():
     
@@ -58,17 +70,43 @@ def country():
     # Render the coaches page with the fetched data
     return render_template('country.html', countries=countries)
 
+@app.route('/delete_country>', methods=['POST'])
+def delete_country():
+    country = request.args.get('country')
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM country WHERE Country_code = %s", (country,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return redirect(url_for('country')) # No content response
+
+
 @app.route("/medal")
 def medal():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM medal ORDER BY athlete_short_name")  # Ensure that the table name is correct
+    cursor.execute("SELECT * FROM medal ORDER BY Athlete_short_name")  # Ensure that the table name is correct
     medals = cursor.fetchall() 
     cursor.close()
     conn.close()
 
 
     return render_template("medals.html", medals=medals)
+
+@app.route('/delete_medal>', methods=['POST'])
+def delete_medal():
+    medal_id = request.args.get('medal')
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM medal WHERE Medal_id = %s", (medal_id,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return redirect(url_for('medal')) # No content response
+
 
 @app.route('/tech')
 def tech():
@@ -82,6 +120,20 @@ def tech():
     
     # Render the tech_officials page with the fetched data
     return render_template('tech_officials.html', tech_officials=tech_officials)
+
+
+@app.route('/delete_tech>', methods=['POST'])
+def delete_tech():
+    tech_id = request.args.get('tech')
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM tech_of WHERE Tech_id = %s", (tech_id,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return redirect(url_for('tech')) # No content response
+
 
 @app.route('/athletes', methods=['GET'])
 def athletes():
@@ -102,6 +154,19 @@ def athletes():
     # Render the coaches page with the fetched data
     return render_template('athletes.html', athletes=athleties)
 
+@app.route('/delete_athlete>', methods=['POST'])
+def delete_athlete():
+    Athlete_name = request.args.get('athletes')
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM athletes WHERE Athlete_name = %s", (Athlete_name,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return redirect(url_for('athletes')) # No content response
+
+
 @app.route('/discipline', methods=['GET'])
 def discipline():
     discipline_name = request.args.get('discipline')
@@ -119,6 +184,19 @@ def discipline():
     
     return render_template('discipline.html', disciplines=disciplines)
 
+@app.route('/delete_discipline>', methods=['POST'])
+def delete_discipline():
+    Discipline = request.args.get('discipline')
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM discipline WHERE Discipline = %s", (Discipline,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return redirect(url_for('discipline')) # No content response
+
+
 @app.route('/events', methods=['GET'])
 def events():
     conn = get_db_connection()
@@ -129,6 +207,19 @@ def events():
     conn.close()
     
     return render_template('events.html', events=events)
+
+@app.route('/delete_event>', methods=['POST'])
+def delete_event():
+    stage = request.args.get('events')
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM events_ WHERE Event_stage = %s", (stage,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return redirect(url_for('events'))
+
 if __name__ == '__main__':
     app.run(debug=True)
 
