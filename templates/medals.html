@@ -104,7 +104,7 @@
                 <p><strong>Short Name:</strong> {{ medal.Athlete_short_name }}</p>
                 <p><strong>Name:</strong> {{ medal.Name }}</p>
                 <p><strong>Sex:</strong> {{ medal.Athlete_sex }}</p>
-                <p><strong>Event:</strong> {{ medal.Event_stage }}</p>
+                <p><strong>Event:</strong><a href="{{ url_for('events') }}?events={{ medal.Event_stage }}">{{ medal.Event_stage }}</a></p>
                 <p><strong>Country:</strong> {{ medal.Country }}</p>
 
                 <p><strong>Country_code:</strong> <a href="{{ url_for('country') }}?country={{ medal.Country_code }}">{{ medal.Country_code }}</a></p>

@@ -99,6 +99,30 @@
 
     <h1>Events List</h1>
 
+        <div style="text-align: center;">
+            <button onclick="openModal('insert-modal')">Insert Event</button>
+        </div>
+    
+        <div class="modal-overlay" id="insert-modal" onclick="closeModal('insert-modal')">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <span class="close-button" onclick="closeModal('insert-modal')">&times;</span>
+                <h2>Add a New Event</h2>
+                <form action="{{ url_for('insert_event') }}" method="post">
+                    <label for="event-stage">Event Stage:</label>
+                    <input type="text" id="event-stage" name="event_stage" required><br><br>
+                    <label for="location">Location:</label>
+                    <input type="text" id="location" name="location" required><br><br>
+                    <label for="event-status">Event Status:</label>
+                    <input type="text" id="event-status" name="event_status" required><br><br>
+                    <label for="time">Event Time:</label>
+                    <input type="text" id="time" name="time" required><br><br>
+                    <label for="discipline">Discipline:</label>
+                    <input type="text" id="discipline" name="discipline" required><br><br>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+
     <div class="container">
         {% for event in events %}
         <div class="event-card" onclick="openModal('modal-{{ loop.index }}')">
@@ -114,7 +138,7 @@
                 <p><strong>Location:</strong> {{ event.Location }}</p>
                 <p><strong>Status:</strong> {{ event.Event_status }}</p>
                 <p><strong>Time:</strong> {{ event.Time }}</p>
-                <p><strong>Discipline:</strong> {{ event.Discipline }}</p>
+                <p><strong>Discipline:</strong><a href="{{ url_for('discipline') }}?discipline={{ event.Discipline }}"> {{ event.Discipline }}</a></p>
                 <form action="{{ url_for('delete_event') }}?events={{ event.Event_stage }}" method="post">
                     <button href="{{ url_for('events')}}"style="color: red;">Delete</button>
                 </form>

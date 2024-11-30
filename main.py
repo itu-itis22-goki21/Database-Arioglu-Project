@@ -7,9 +7,9 @@ app = Flask(__name__)
 # MySQL connection configuration
 db_config = {
     'user': 'root',
-    'password': 'admin',
+    'password': 'Qweasdqwe123.',
     'host': 'localhost',
-    'database': "test"
+    'database': "database_final"
 }
 
 # Function to connect to the MySQL database
@@ -50,6 +50,31 @@ def delete_coaches():
     cursor.close()
     conn.close()
     return redirect(url_for('coaches'))
+
+@app.route('/insert_coach', methods=['POST'])
+def insert_coach():
+    # Retrieve form data
+    name = request.form.get('name')
+    gender = request.form.get('gender')
+    birth_date = request.form.get('birth_date')
+    country_code = request.form.get('country_code')
+    discipline = request.form.get('discipline')
+    function = request.form.get('function')
+
+    # Insert the new coach into the database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    query = """
+        INSERT INTO coaches (Coach_name, Gender, Birth_date, Country_code, Discipline, coaches.Function)
+        VALUES (%s, %s, %s, %s, %s, %s)
+    """
+    cursor.execute(query, (name, gender, birth_date, country_code, discipline, function))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    # Redirect back to the coaches page
+    return "<script>alert('Coach added successfully!'); window.location.href='/coaches';</script>"
 
 @app.route('/country', methods=['GET'])
 def country():
@@ -133,6 +158,33 @@ def delete_tech():
     cursor.close()
     conn.close()
     return redirect(url_for('tech')) # No content response
+
+@app.route('/insert_tech', methods=['POST'])
+def insert_tech():
+    # Retrieve form data
+    tech_name = request.form.get('tech_name')
+    gender = request.form.get('gender')
+    birth_date = request.form.get('birth_date')
+    country = request.form.get('country')
+    country_code = request.form.get('country_code')
+    discipline = request.form.get('discipline')
+    function = request.form.get('function')
+
+    # Insert the new tech official into the database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    query = """
+        INSERT INTO tech_of (Tech_name, Gender, Birth_date, Country, Country_code, Discipline, tech_of.Function)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+    """
+    cursor.execute(query, (tech_name, gender, birth_date, country, country_code, discipline, function))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    # Redirect back to the technical officials page
+    return "<script>alert('Technical Official added successfully!'); window.location.href='/tech';</script>"
+
 
 
 @app.route('/athletes', methods=['GET'])
@@ -219,6 +271,30 @@ def delete_event():
     cursor.close()
     conn.close()
     return redirect(url_for('events'))
+
+@app.route('/insert_event', methods=['POST'])
+def insert_event():
+    # Retrieve form data
+    event_stage = request.form.get('event_stage')
+    location = request.form.get('location')
+    event_status = request.form.get('event_status')
+    time = request.form.get('time')
+    discipline = request.form.get('discipline')
+
+    # Insert the new event into the database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    query = """
+        INSERT INTO events_ (Event_stage, Location, Event_status, Time, Discipline)
+        VALUES (%s, %s, %s, %s, %s)
+    """
+    cursor.execute(query, (event_stage, location, event_status, time, discipline))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    # Redirect back to the events page
+    return "<script>alert('Event added successfully!'); window.location.href='/events';</script>"
 
 if __name__ == '__main__':
     app.run(debug=True)

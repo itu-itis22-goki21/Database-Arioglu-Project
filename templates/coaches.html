@@ -95,6 +95,33 @@
 
     <h1>Coaches List</h1>
 
+    <div style="text-align: center;">
+        <button onclick="openModal('insert-modal')">Insert</button>
+    </div>
+    
+    <div class="modal-overlay" id="insert-modal" onclick="closeModal('insert-modal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-button" onclick="closeModal('insert-modal')">&times;</span>
+            <h2>Add a Coach</h2>
+            <form action="{{ url_for('insert_coach') }}" method="post">
+                <label for="coach-name">Name:</label>
+                <input type="text" id="coach-name" name="name" required><br><br>
+                <label for="gender">Gender:</label>
+                <input type="text" id="gender" name="gender" required><br><br>
+                <label for="birth-date">Birth Date:</label>
+                <input type="text" id="birth-date" name="birth_date" required><br><br>
+                <label for="country-code">Country Code:</label>
+                <input type="text" id="country-code" name="country_code" required><br><br>
+                <label for="discipline">Discipline:</label>
+                <input type="text" id="discipline" name="discipline" required><br><br>
+                <label for="function">Function:</label>
+                <input type="text" id="function" name="function" required><br><br>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+
     <div class="container">
         {% for coach in coaches %}
         <div class="coach-card" onclick="openModal('modal-{{ loop.index }}')">
@@ -109,8 +136,8 @@
                 <p><strong>Name:</strong> {{ coach.Coach_name }}</p>
                 <p><strong>Gender:</strong> {{ coach.Gender }}</p>
                 <p><strong>Birth Date:</strong> {{ coach.Birth_date }}</p>
-                <p><strong>Country:</strong> {{ coach.Country_code }}</p>
-                <p><strong>Discipline:</strong> {{ coach.Discipline }}</p>
+                <p><strong>Country:</strong> <a href="{{ url_for('country') }}?country={{ coach.Country_code }}">{{ coach.Country_code }}</a></p>
+                <p><strong>Discipline:</strong><a href="{{ url_for('discipline') }}?discipline={{ coach.Discipline }}"> {{ coach.Discipline }}</a></p>
                 <p><strong>Function:</strong> {{ coach.Function }}</p>
                 <form action="{{ url_for('delete_coaches') }}?coaches={{ coach.Coach_name }}" method="post">
                     <button href="{{ url_for('coaches')}}"style="color: red;">Delete</button>
