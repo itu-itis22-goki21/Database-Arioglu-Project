@@ -8,9 +8,9 @@ app = Flask(__name__)
 # MySQL connection configuration
 db_config = {
     'user': 'root',
-    'password': 'admin',
+    'password': 'Qweasdqwe123.',
     'host': 'localhost',
-    'database': "test"
+    'database': "database"
 }
 
 # Function to connect to the MySQL database
@@ -610,7 +610,7 @@ def update_event():
 
 @app.route('/delete_event>', methods=['POST'])
 def delete_event():
-    stage = request.args.get('events')
+    event_id = request.args.get('events')
     
     conn = get_db_connection()
     cursor = conn.cursor()
