@@ -491,9 +491,9 @@ def update_athlete():
     UPDATE athletes a
     JOIN discipline d ON a.Discipline = d.Discipline
     SET a.Discipline_id = d.Discipline_id
-    WHERE a.Discipline_id IS NULL;
+    WHERE a.`Discipline` = %s AND a.`Discipline_id` != d.`Discipline_id`;
     """
-    cursor.execute(update_query)
+    cursor.execute(update_query,(Discipline,))
 
     # Commit changes
     conn.commit()
