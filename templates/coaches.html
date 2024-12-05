@@ -177,11 +177,10 @@
                 <p><strong>Country:</strong> <a href="{{ url_for('country') }}?country={{ coach.Country_code }}">{{ coach.Country_code }}</a></p>
                 <p><strong>Discipline:</strong><a href="{{ url_for('discipline') }}?discipline={{ coach.Discipline }}"> {{ coach.Discipline }}</a></p>
                 <p><strong>Function:</strong> {{ coach.Function }}</p>
-                <div style="text-align: left;">
-                    <button onclick="openUpdateModal('{{ coach.Coach_id }}')">Update</button>
-                </div>
+
                 <form action="{{ url_for('delete_coaches') }}?coaches={{ coach.Coach_id }}" method="post">
-                    <button style="color: red;">Delete</button>
+                    <button href="{{ url_for('coaches')}}"style="color: red;">Delete</button>
+
                 </form>
             </div>
         </div>

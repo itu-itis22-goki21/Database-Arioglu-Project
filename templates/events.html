@@ -93,6 +93,20 @@
                 modal.style.display = 'none';
             }
         }
+        function openUpdateModal(id) {
+            // Close the current modal overlay
+            closeModal(id);
+
+            // Open the update modal
+            const updateModal = document.getElementById('update-modal');
+            updateModal.style.display = 'flex';
+        }
+
+        // Close Update Modal
+        function closeUpdateModal() {
+            const updateModal = document.getElementById('update-modal');
+            updateModal.style.display = 'none';
+        }
     </script>
 </head>
 <body>
@@ -122,7 +136,27 @@
                 </form>
             </div>
         </div>
-
+        {% for medal in medals %}
+        <div class="modal-overlay" id="update-modal" onclick="closeUpdateModal('update-modal')">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <span class="close-button" onclick="closeUpdateModal('update-modal')">&times;</span>
+                <h2>Add a New Event</h2>
+                <form action="{{ url_for('update_event')}}?event={{event.Event_id}} " method="post">
+                    <label for="event-stage">Event Stage:</label>
+                    <input type="text" id="event-stage" name="event_stage" placeholder="{{ medal.Medal_type }}" required><br><br>
+                    <label for="location">Location:</label>
+                    <input type="text" id="location" name="location"placeholder="{{ medal.Medal_type }}" required><br><br>
+                    <label for="event-status">Event Status:</label>
+                    <input type="text" id="event-status" name="event_status"placeholder="{{ medal.Medal_type }}" required><br><br>
+                    <label for="time">Event Time:</label>
+                    <input type="text" id="time" name="time"placeholder="{{ medal.Medal_type }}" required><br><br>
+                    <label for="discipline">Discipline:</label>
+                    <input type="text" id="discipline" name="discipline"placeholder="{{ medal.Medal_type }}" required><br><br>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
     <div class="container">
         {% for event in events %}
         <div class="event-card" onclick="openModal('modal-{{ loop.index }}')">
@@ -139,7 +173,10 @@
                 <p><strong>Status:</strong> {{ event.Event_status }}</p>
                 <p><strong>Time:</strong> {{ event.Time }}</p>
                 <p><strong>Discipline:</strong><a href="{{ url_for('discipline') }}?discipline={{ event.Discipline }}"> {{ event.Discipline }}</a></p>
-                <form action="{{ url_for('delete_event') }}?events={{ event.Event_stage }}" method="post">
+                <div style="text-align: left;">
+                    <button onclick="openUpdateModal('{{ event.Event_id }}')">Update</button>
+                </div>
+                <form action="{{ url_for('delete_event') }}?events={{ event.Event_id }}" method="post">
                     <button href="{{ url_for('events')}}"style="color: red;">Delete</button>
                 </form>
             </div>
