@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, url_for
 import mysql.connector
 from flask import request
+import math
 
 app = Flask(__name__)
 
@@ -326,22 +327,35 @@ def insert_tech():
 
 @app.route('/athletes', methods=['GET'])
 def athletes():
+    # Get the current page number from the URL, default to page 1
+    page = request.args.get('page', 1, type=int)
     
-    athletes = request.args.get('athletes')
-    # Connect to the database and retrieve coaches data
+    # Set the number of athletes per page
+    per_page = 50
+    
+    # Calculate the offset for the query
+    offset = (page - 1) * per_page
+    
+    # Connect to the database and retrieve athletes data with pagination
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-
-    if athletes:
-        cursor.execute("SELECT * FROM athletes WHERE name = %s", (athletes,))
-    else:
-        cursor.execute("SELECT * FROM athletes")
-    athleties = cursor.fetchall()
+    
+    # Fetch the total count of athletes to calculate total pages
+    cursor.execute("SELECT COUNT(*) FROM athletes")
+    total_athletes = cursor.fetchone()['COUNT(*)']
+    
+    # Fetch athletes for the current page
+    cursor.execute("SELECT * FROM athletes LIMIT %s OFFSET %s", (per_page, offset))
+    athletes = cursor.fetchall()
+    
     cursor.close()
     conn.close()
     
-    # Render the coaches page with the fetched data
-    return render_template('athletes.html', athletes=athleties)
+    # Calculate the total number of pages
+    total_pages = math.ceil(total_athletes / per_page)
+    
+    # Render the athletes page with the current page and total pages
+    return render_template('athletes.html', athletes=athletes, page=page, total_pages=total_pages)
 
 @app.route('/delete_athlete>', methods=['POST'])
 def delete_athlete():
@@ -397,6 +411,47 @@ def insert_athlete():
         # Redirect back to the countries page
     return "<script>alert('Country added successfully!'); window.location.href='/athletes';</script>"
 
+@app.route('/update_athlete', methods=['POST'])
+def update_athlete():
+    Athlete_name = request.form.get('athlete_name')
+    Short_name = request.form.get('short_name')
+    Gender = request.form.get('gender')
+    Birth_place = request.form.get('birth_place')
+    Birth_country = request.form.get('birth_country')
+    Country_code = request.form.get('country_code')
+    Discipline = request.form.get('discipline')
+
+    # Connect to the database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Update athlete information
+    query = """
+    UPDATE athletes
+    SET Athlete_name = %s, Short_name = %s, Gender = %s, Birth_place = %s, 
+        Birth_country = %s, Country_code = %s, Discipline = %s
+    WHERE Athlete_id = %s;
+    """
+    athlete_id = request.args.get('id')  # Assuming the athlete ID is passed in the URL
+    cursor.execute(query, (Athlete_name, Short_name, Gender, Birth_place, Birth_country, Country_code, Discipline, athlete_id))
+
+    # Update Discipline_id by joining with the discipline table
+    update_query = """
+    UPDATE athletes a
+    JOIN discipline d ON a.Discipline = d.Discipline
+    SET a.Discipline_id = d.Discipline_id
+    WHERE a.Discipline_id IS NULL;
+    """
+    cursor.execute(update_query)
+
+    # Commit changes
+    conn.commit()
+
+    # Close the database connection
+    cursor.close()
+    conn.close()
+
+    return redirect(url_for('athletes'))
 
 @app.route('/discipline', methods=['GET'])
 def discipline():
