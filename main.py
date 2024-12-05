@@ -8,9 +8,9 @@ app = Flask(__name__)
 # MySQL connection configuration
 db_config = {
     'user': 'root',
-    'password': 'Qweasdqwe123.',
+    'password': 'admin',
     'host': 'localhost',
-    'database': "database"
+    'database': "test"
 }
 
 # Function to connect to the MySQL database
@@ -42,11 +42,11 @@ def coaches():
 
 @app.route('/delete_coaches>', methods=['POST'])
 def delete_coaches():
-    Coach_name = request.args.get('coaches')
+    Coach_id = request.args.get('coaches')
     
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM coaches WHERE Coach_name = %s", (Coach_name,))
+    cursor.execute("DELETE FROM coaches WHERE Coach_id = %s", (Coach_id,))
     conn.commit()
     cursor.close()
     conn.close()
@@ -359,11 +359,11 @@ def athletes():
 
 @app.route('/delete_athlete>', methods=['POST'])
 def delete_athlete():
-    Athlete_name = request.args.get('athletes')
+    Athlete_id = request.args.get('athletes')
     
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM athletes WHERE Athlete_name = %s", (Athlete_name,))
+    cursor.execute("DELETE FROM athletes WHERE Athlete_id = %s", (Athlete_id,))
     conn.commit()
     cursor.close()
     conn.close()
@@ -472,11 +472,11 @@ def discipline():
 
 @app.route('/delete_discipline>', methods=['POST'])
 def delete_discipline():
-    Discipline = request.args.get('discipline')
+    Discipline_id = request.args.get('discipline')
     
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM discipline WHERE Discipline = %s", (Discipline,))
+    cursor.execute("DELETE FROM discipline WHERE Discipline_id = %s", (Discipline_id,))
     conn.commit()
     cursor.close()
     conn.close()
@@ -525,13 +525,45 @@ def events():
     
     return render_template('events.html', events=events)
 
+@app.route('/update_event', methods=['POST'])
+def update_event():
+    # Retrieve form data
+    Event_stage = request.form.get('event_stage')
+    Location = request.form.get('location')
+    Event_status = request.form.get('event_status')
+    Time = request.form.get('time')
+    Discipline = request.form.get('discipline')
+
+    # Insert the new event into the database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    query = """
+        UPDATE SET Event_stage=%s, location=%s, event_status=%s, time=%s, discipline=%s WHERE Event_id=%s
+    """
+    cursor.execute(query, ( Location, Event_stage, Event_status, Time, Discipline))
+    update_query_event = """
+    UPDATE `events_` a
+    JOIN `athletes` d
+    ON a.`Discipline` = d.`Discipline`
+    SET a.`Discipline_id` = d.`Discipline_id`
+    WHERE a.`Discipline_id` IS NULL;
+    """
+    cursor.execute(update_query_event)
+    
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    # Redirect back to the events page
+    return "<script>alert('Event added successfully!'); window.location.href='/events';</script>"
+
 @app.route('/delete_event>', methods=['POST'])
 def delete_event():
     stage = request.args.get('events')
     
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM events_ WHERE Event_stage = %s", (stage,))
+    cursor.execute("DELETE FROM events_ WHERE Event_id = %s", (event_id,))
     conn.commit()
     cursor.close()
     conn.close()
