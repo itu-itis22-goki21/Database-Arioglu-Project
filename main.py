@@ -7,9 +7,9 @@ app = Flask(__name__)
 # MySQL connection configuration
 db_config = {
     'user': 'root',
-    'password': 'admin',
+    'password': 'Qweasdqwe123.',
     'host': 'localhost',
-    'database': "test"
+    'database': "database"
 }
 
 # Function to connect to the MySQL database
@@ -194,6 +194,23 @@ def insert_medal():
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
     """
     cursor.execute(query, (Medal_type, Medal_code, Athlete_short_name, Athlete_name, Athlete_sex, Event_stage, Country, Country_code))
+    update_query_ath = """
+    UPDATE `medal` a
+    JOIN `athletes` d
+    ON a.`Name` = d.`Athlete_name`
+    SET a.`Athlete_id` = d.`Athlete_id`
+    WHERE a.`Athlete_id` IS NULL;
+    """
+    cursor.execute(update_query_ath)
+
+    update_query_event = """
+    UPDATE `medal` a
+    JOIN `events_` d
+    ON a.`Event_stage` = d.`Event_stage`
+    SET a.`Event_id` = d.`Event_id`
+    WHERE a.`Event_id` IS NULL;
+    """
+    cursor.execute(update_query_event)
     conn.commit()
 
     # Close the database connection
@@ -290,6 +307,14 @@ def insert_tech():
         VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
     cursor.execute(query, (tech_name, gender, birth_date, country, country_code, discipline, function))
+    update_tech = """
+    UPDATE `tech_of` a
+    JOIN `discipline` d
+    ON a.`Discipline` = d.`Discipline`
+    SET a.`Discipline_id` = d.`Discipline_id`
+    WHERE a.`Discipline_id` IS NULL;
+    """
+    cursor.execute(update_tech)
     conn.commit()
     cursor.close()
     conn.close()
@@ -474,6 +499,15 @@ def insert_event():
         VALUES (%s, %s, %s, %s, %s)
     """
     cursor.execute(query, (event_stage, location, event_status, time, discipline))
+    update_query_event = """
+    UPDATE `events_` a
+    JOIN `athletes` d
+    ON a.`Discipline` = d.`Discipline`
+    SET a.`Discipline_id` = d.`Discipline_id`
+    WHERE a.`Discipline_id` IS NULL;
+    """
+    cursor.execute(update_query_event)
+    
     conn.commit()
     cursor.close()
     conn.close()
