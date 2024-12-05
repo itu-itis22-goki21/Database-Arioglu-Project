@@ -69,6 +69,15 @@ def insert_coach():
         VALUES (%s, %s, %s, %s, %s, %s)
     """
     cursor.execute(query, (name, gender, birth_date, country_code, discipline, function))
+    update_query = """
+    UPDATE `coaches` a
+    JOIN `discipline` d
+    ON a.`Discipline` = d.`Discipline`
+    SET a.`Discipline_id` = d.`Discipline_id`
+    WHERE a.`Discipline_id` IS NULL;
+        """
+    cursor.execute(update_query)
+
     conn.commit()
     cursor.close()
     conn.close()
