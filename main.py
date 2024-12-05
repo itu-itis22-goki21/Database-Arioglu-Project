@@ -7,9 +7,9 @@ app = Flask(__name__)
 # MySQL connection configuration
 db_config = {
     'user': 'root',
-    'password': 'Qweasdqwe123.',
+    'password': 'admin',
     'host': 'localhost',
-    'database': "database_final"
+    'database': "test"
 }
 
 # Function to connect to the MySQL database
@@ -116,7 +116,7 @@ def insert_country():
     bronze = int(request.form.get('bronze'))
     rank = int(request.form.get('rank'))
     
-    # Calculate total medals
+    
     total = gold + silver + bronze
 
     # Connect to the database
@@ -193,6 +193,47 @@ def insert_medal():
 
     # Redirect back to the medals page with a success message
     return "<script>alert('Medal added successfully!'); window.location.href='/medal';</script>"
+
+@app.route('/update_medal', methods=['POST'])
+def update_medal():
+    # Retrieve form data
+    Medal_id = request.args.get('medal')  # Assuming the medal ID is passed as a query parameter
+    Medal_type = request.form.get('medal_type')
+    Medal_code = request.form.get('medal_code')
+    Athlete_short_name = request.form.get('athlete_short_name')
+    Name = request.form.get('athlete_name')
+    Athlete_sex = request.form.get('athlete_sex')
+    Event_stage = request.form.get('event_stage')
+    Country = request.form.get('country')
+    Country_code = request.form.get('country_code')
+
+    # Connect to the database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Corrected UPDATE query with WHERE clause
+    query = """
+    UPDATE medal 
+    SET Medal_type = COALESCE(%s, Medal_type), 
+    Medal_code = COALESCE(%s, Medal_code), 
+    Athlete_short_name = COALESCE(%s, Athlete_short_name), 
+    Name = COALESCE(%s, Name), 
+    Athlete_sex = COALESCE(%s, Athlete_sex), 
+    Event_stage = COALESCE(%s, Event_stage), 
+    Country = COALESCE(%s, Country), 
+    Country_code = COALESCE(%s, Country_code)
+    WHERE Medal_id = %s
+    """
+
+    cursor.execute(query, (Medal_type, Medal_code, Athlete_short_name, Name, Athlete_sex, Event_stage, Country, Country_code, Medal_id))
+    conn.commit()
+
+    # Close the database connection
+    cursor.close()
+    conn.close()
+
+    # Redirect back to the medals page with a success message
+    return "<script>alert('Medal updated successfully!'); window.location.href='/medal';</script>"
 
 
 @app.route('/tech')
@@ -300,10 +341,19 @@ def insert_athlete():
 
         # Insert data into the database
     query = """
-    INSERT INTO athletes (Athlete_name, Short_name, Gender, Birth_place, Birth_country, Country_code,Discipline)
-    VALUES (%s, %s, %s, %s, %s, %s,%s)
+    INSERT INTO athletes (Athlete_name, Short_name, Gender, Birth_place, Birth_country, Country_code, Discipline)
+    VALUES (%s, %s, %s, %s, %s, %s,%s); 
     """
     cursor.execute(query, (Athlete_name, Short_name, Gender, Birth_place,Birth_country, Country_code,Discipline))
+    update_query = """
+    UPDATE `athletes` a
+    JOIN `discipline` d
+    ON a.`Discipline` = d.`Discipline`
+    SET a.`Discipline_id` = d.`Discipline_id`
+    WHERE a.`Discipline_id` IS NULL;
+        """
+    cursor.execute(update_query)
+    
     conn.commit()
 
         # Close the database connection
@@ -352,7 +402,7 @@ def insert_discipline():
     
     
     
-    # Calculate total medals
+    
     Total = F + M
 
     # Connect to the database

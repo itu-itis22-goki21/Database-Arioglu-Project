@@ -93,12 +93,12 @@
     <script>
         function openModal(id) {
             const modal = document.getElementById('modal-' + id);
-            modal.style.display = 'flex';  // Show the modal
+            modal.style.display = 'flex'; // Show the modal
         }
 
         function closeModal(id) {
             const modal = document.getElementById('modal-' + id);
-            modal.style.display = 'none';  // Hide the modal
+            modal.style.display = 'none'; // Hide the modal
         }
 
         // Open Insert Modal
@@ -112,6 +112,21 @@
             const insertModal = document.getElementById('insert-modal');
             insertModal.style.display = 'none';
         }
+
+        function openUpdateModal(id) {
+            // Close the current modal overlay
+            closeModal(id);
+
+            // Open the update modal
+            const updateModal = document.getElementById('update-modal');
+            updateModal.style.display = 'flex';
+        }
+
+        // Close Update Modal
+        function closeUpdateModal() {
+            const updateModal = document.getElementById('update-modal');
+            updateModal.style.display = 'none';
+        }
     </script>
 </head>
 <body>
@@ -121,7 +136,7 @@
     <div style="text-align: center;">
         <button onclick="openInsertModal()">Insert Medal</button>
     </div>
-
+    
     <!-- Insert Medal Modal -->
     <div class="modal-overlay" id="insert-modal" onclick="closeInsertModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
@@ -154,6 +169,42 @@
         </div>
     </div>
 
+    {% for medal in medals %}
+    <div class="modal-overlay" id="update-modal" onclick="closeUpdateModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-button" onclick="closeUpdateModal()">&times;</span>
+            <h2>Update This Medal</h2>
+            <form action="{{ url_for('update_medal') }}?medal={{ medal.Medal_id }}" method="post">
+                <label for="medal-type">Medal Type:</label>
+                <input type="text" id="medal-type" name="medal_type" placeholder="{{ medal.Medal_type }}" required><br><br>
+        
+                <label for="medal-code">Medal Code:</label>
+                <input type="text" id="medal-code" name="medal_code" placeholder="{{ medal.Medal_code }}" required><br><br>
+        
+                <label for="athlete-short-name">Athlete Short Name:</label>
+                <input type="text" id="athlete-short-name" name="athlete_short_name" placeholder="{{ medal.Athlete_short_name }}" required><br><br>
+    
+                <label for="name">Athlete Name:</label>
+                <input type="text" id="name" name="athlete_name" placeholder="{{ medal.Name }}" required><br><br>
+        
+                <label for="athlete-sex">Sex:</label>
+                <input type="text" id="athlete-sex" name="athlete_sex" placeholder="{{ medal.Athlete_sex }}" required><br><br>
+        
+                <label for="event">Event:</label>
+                <input type="text" id="event" name="event_stage" placeholder="{{ medal.Event_stage }}" required><br><br>
+        
+                <label for="country">Country:</label>
+                <input type="text" id="country" name="country" placeholder="{{ medal.Country }}" required><br><br>
+        
+                <label for="country-code">Country Code:</label>
+                <input type="text" id="country-code" name="country_code" placeholder="{{ medal.Country_code }}" required><br><br>
+        
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+
     <div class="container">
         {% for medal in medals %}
         <div class="medal-box" onclick="openModal('{{ medal.Medal_id }}')">
@@ -172,7 +223,10 @@
                 <p><strong>Sex:</strong> {{ medal.Athlete_sex }}</p>
                 <p><strong>Event:</strong> {{ medal.Event_stage }}</p>
                 <p><strong>Country:</strong> {{ medal.Country }}</p>
-                <p><strong>Country_code:</strong> <a href="{{ url_for('country') }}?country={{ medal.Country_code }}">{{ medal.Country_code }}</a></p>
+                <p><strong>Country code:</strong> <a href="{{ url_for('country') }}?country={{ medal.Country_code }}">{{ medal.Country_code }}</a></p>
+                <div style="text-align: left;">
+                    <button onclick="openUpdateModal('{{ medal.Medal_id }}')">Update</button>
+                </div>
                 <form action="{{ url_for('delete_medal') }}?medal={{ medal.Medal_id }}" method="post">
                     <button href="{{ url_for('medal') }}" style="color: red;">Delete</button>
                 </form>
