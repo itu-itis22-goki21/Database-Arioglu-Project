@@ -86,6 +86,57 @@ def insert_coach():
     # Redirect back to the coaches page
     return "<script>alert('Coach added successfully!'); window.location.href='/coaches';</script>"
 
+@app.route('/update_coach', methods=['POST'])
+def update_coach():
+    # Retrieve form data
+    coach_id = request.form.get('coach_id')  
+    name = request.form.get('name')
+    gender = request.form.get('gender')
+    birth_date = request.form.get('birth_date')
+    country_code = request.form.get('country_code')
+    discipline = request.form.get('discipline')  
+    function = request.form.get('function')
+
+    # Connect to the database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+
+    query = """
+    UPDATE coaches
+    SET Coach_name = COALESCE(%s, Coach_name),
+        Gender = COALESCE(%s, Gender),
+        Birth_date = COALESCE(%s, Birth_date),
+        Country_code = COALESCE(%s, Country_code),
+        Discipline = COALESCE(%s, Discipline),
+        `Function` = COALESCE(%s, `Function`)
+    WHERE Coach_id = %s
+    """
+    
+    # Execute the first query to update the coach's information
+    cursor.execute(query, (name, gender, birth_date, country_code, discipline, function, coach_id))
+
+    # Now use the same `discipline` from the form to update the `Discipline_id`
+    update_query = """
+    UPDATE `coaches` a
+    JOIN `discipline` d
+    ON a.`Discipline` = d.`Discipline`
+    SET a.`Discipline_id` = d.`Discipline_id`
+    WHERE a.`Discipline` = %s AND a.`Discipline_id` != d.`Discipline_id`;
+    """
+    
+    cursor.execute(update_query, (discipline,)) 
+
+    # Commit the changes
+    conn.commit()
+
+    # Close the database connection
+    cursor.close()
+    conn.close()
+
+    # Redirect back to the coaches page with a success message
+    return "<script>alert('Coach updated successfully!'); window.location.href='/coaches';</script>"
+
 @app.route('/country', methods=['GET'])
 def country():
     
