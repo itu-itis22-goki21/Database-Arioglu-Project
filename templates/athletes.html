@@ -157,22 +157,22 @@
                     <input type="text" id="athlete-name" name="athlete_name" value={{athlete.Athlete_name}} required><br><br>
         
                     <label for="short-name">Short Name:</label>
-                    <input type="text" id="short-name" name="short_name" value={{athlete.Short_name}}required><br><br>
+                    <input type="text" id="short-name" name="short_name" value={{athlete.Short_name}} required><br><br>
         
                     <label for="gender">Sex:</label>
-                    <input type="text" id="athlete-sex" name="gender" value={{athlete.Gender}}required><br><br>
+                    <input type="text" id="athlete-sex" name="gender" value={{athlete.Gender}} required><br><br>
         
                     <label for="birth-place">Birth Place:</label>
-                    <input type="text" id="birth-place" name="birth_place" value={{athlete.Birth_place}}required><br><br>
+                    <input type="text" id="birth-place" name="birth_place" value={{athlete.Birth_place}} required><br><br>
         
                     <label for="birth-country">Birth Country:</label>
-                    <input type="text" id="birth-country" name="birth_country" value={{athlete.Birth_country}}required><br><br>
+                    <input type="text" id="birth-country" name="birth_country" value={{athlete.Birth_country}} required><br><br>
         
                     <label for="country-code">Country Code:</label>
-                    <input type="text" id="country-code" name="country_code" value={{athlete.Country_code}}required><br><br>
+                    <input type="text" id="country-code" name="country_code" value={{athlete.Country_code}} required><br><br>
         
                     <label for="discipline">Discipline:</label>
-                    <input type="text" id="discipline" name="discipline" value={{athlete.Discipline}}required><br><br>
+                    <input type="text" id="discipline" name="discipline" value={{athlete.Discipline}} required><br><br>
         
                     <button type="submit">Submit</button>
                 </form>
@@ -190,7 +190,7 @@
                 <p><strong>Country Code:</strong> <a href="{{ url_for('country') }}?country={{ athlete.Country_code }}">{{ athlete.Country_code }}</a></p>
                 <p><strong>Discipline:</strong> <a href="{{ url_for('discipline') }}?discipline={{ athlete.Discipline }}">{{ athlete.Discipline}}</a></p>
                 <div style="text-align: left;">
-                    <button onclick="openModal('update-{{ loop.index }}')">Update</button>
+                    <button onclick="closeModal('modal-{{loop.index}}');openModal('update-{{ loop.index }}')">Update</button>
                 </div>
                 <form action="{{ url_for('delete_athlete') }}?athletes={{ athlete.Athlete_id }}" method="post">
                     <button href="{{ url_for('athletes')}}"style="color: red;">Delete</button>
