@@ -239,7 +239,7 @@ def update_country():
 def medal():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM medal ORDER BY Athlete_short_name")  # Ensure that the table name is correct
+    cursor.execute("SELECT * FROM medal")  # Ensure that the table name is correct
     medals = cursor.fetchall() 
     cursor.close()
     conn.close()
@@ -264,12 +264,10 @@ def insert_medal():
     # Retrieve form data
     Medal_type = request.form.get('medal_type')
     Medal_code = request.form.get('medal_code')
-    Athlete_short_name = request.form.get('athlete_short_name')
-    Athlete_name = request.form.get('athlete_name')
     Athlete_sex = request.form.get('athlete_sex')
-    Event_stage = request.form.get('event_stage')
-    Country = request.form.get('country')
+    Event_id = request.form.get('event_id')
     Country_code = request.form.get('country_code')
+    Medal_date = request.form.get('medal_date')
 
     # Connect to the database
     conn = get_db_connection()
@@ -277,27 +275,10 @@ def insert_medal():
 
     # Insert data into the database
     query = """
-    INSERT INTO medal (Medal_type, Medal_code, Athlete_short_name, Name, Athlete_sex, Event_stage, Country, Country_code)
+    INSERT INTO medal (Medal_type, Medal_code, Athlete_sex, Event_id, Country_code)
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
     """
-    cursor.execute(query, (Medal_type, Medal_code, Athlete_short_name, Athlete_name, Athlete_sex, Event_stage, Country, Country_code))
-    update_query_ath = """
-    UPDATE `medal` a
-    JOIN `athletes` d
-    ON a.`Name` = d.`Athlete_name`
-    SET a.`Athlete_id` = d.`Athlete_id`
-    WHERE a.`Athlete_id` IS NULL;
-    """
-    cursor.execute(update_query_ath)
-
-    update_query_event = """
-    UPDATE `medal` a
-    JOIN `events_` d
-    ON a.`Event_stage` = d.`Event_stage`
-    SET a.`Event_id` = d.`Event_id`
-    WHERE a.`Event_id` IS NULL;
-    """
-    cursor.execute(update_query_event)
+    cursor.execute(query, (Medal_type, Medal_code, Athlete_sex, Event_id, Medal_date, Country_code))
     conn.commit()
 
     # Close the database connection
@@ -313,12 +294,10 @@ def update_medal():
     Medal_id = request.args.get('medal')  # Assuming the medal ID is passed as a query parameter
     Medal_type = request.form.get('medal_type')
     Medal_code = request.form.get('medal_code')
-    Athlete_short_name = request.form.get('athlete_short_name')
-    Name = request.form.get('athlete_name')
     Athlete_sex = request.form.get('athlete_sex')
-    Event_stage = request.form.get('event_stage')
-    Country = request.form.get('country')
+    Event_id = request.form.get('event_id')
     Country_code = request.form.get('country_code')
+    Medal_date = request.form.get('medal_date')
 
     # Connect to the database
     conn = get_db_connection()
@@ -328,17 +307,15 @@ def update_medal():
     query = """
     UPDATE medal 
     SET Medal_type = COALESCE(%s, Medal_type), 
-    Medal_code = COALESCE(%s, Medal_code), 
-    Athlete_short_name = COALESCE(%s, Athlete_short_name), 
-    Name = COALESCE(%s, Name), 
+    Medal_code = COALESCE(%s, Medal_code),
+    Medal_date = COALESCE(%s, Medal_date), 
     Athlete_sex = COALESCE(%s, Athlete_sex), 
-    Event_stage = COALESCE(%s, Event_stage), 
-    Country = COALESCE(%s, Country), 
+    Event_id = COALESCE(%s, Event_id), 
     Country_code = COALESCE(%s, Country_code)
     WHERE Medal_id = %s
     """
 
-    cursor.execute(query, (Medal_type, Medal_code, Athlete_short_name, Name, Athlete_sex, Event_stage, Country, Country_code, Medal_id))
+    cursor.execute(query, (Medal_type, Medal_code,Medal_date, Athlete_sex, Event_id, Country_code, Medal_id))
     conn.commit()
 
     # Close the database connection
@@ -684,26 +661,26 @@ def events():
 def update_event():
     # Retrieve form data
     Event_stage = request.form.get('event_stage')
+    Event_id = request.args.get('event')
     Location = request.form.get('location')
     Event_status = request.form.get('event_status')
     Time = request.form.get('time')
-    Discipline = request.form.get('discipline')
+    Discipline_id = request.form.get('discipline')
 
     # Insert the new event into the database
     conn = get_db_connection()
     cursor = conn.cursor()
+    
     query = """
-        UPDATE SET Event_stage=%s, location=%s, event_status=%s, time=%s, discipline=%s WHERE Event_id=%s
+    UPDATE events_ 
+    SET Event_Stage = COALESCE(%s, Event_stage), 
+    Location = COALESCE(%s, Location),
+    Event_status = COALESCE(%s, Event_status), 
+    Time = COALESCE(%s, Time), 
+    Discipline_id = COALESCE(%s, Discipline_id)
+    WHERE Event_id = %s
     """
-    cursor.execute(query, ( Location, Event_stage, Event_status, Time, Discipline))
-    update_query_event = """
-    UPDATE `events_` a
-    JOIN `athletes` d
-    ON a.`Discipline` = d.`Discipline`
-    SET a.`Discipline_id` = d.`Discipline_id`
-    WHERE a.`Discipline_id` IS NULL;
-    """
-    cursor.execute(update_query_event)
+    cursor.execute(query, ( Event_stage, Location,  Event_status, Time, Discipline_id,Event_id))
     
     conn.commit()
     cursor.close()
@@ -731,24 +708,16 @@ def insert_event():
     location = request.form.get('location')
     event_status = request.form.get('event_status')
     time = request.form.get('time')
-    discipline = request.form.get('discipline')
+    discipline_id = request.form.get('discipline_id')
 
     # Insert the new event into the database
     conn = get_db_connection()
     cursor = conn.cursor()
     query = """
-        INSERT INTO events_ (Event_stage, Location, Event_status, Time, Discipline)
+        INSERT INTO events_ (Event_stage, Location, Event_status, Time, Discipline_id)
         VALUES (%s, %s, %s, %s, %s)
     """
-    cursor.execute(query, (event_stage, location, event_status, time, discipline))
-    update_query_event = """
-    UPDATE `events_` a
-    JOIN `athletes` d
-    ON a.`Discipline` = d.`Discipline`
-    SET a.`Discipline_id` = d.`Discipline_id`
-    WHERE a.`Discipline_id` IS NULL;
-    """
-    cursor.execute(update_query_event)
+    cursor.execute(query, (event_stage, location, event_status, time, discipline_id))
     
     conn.commit()
     cursor.close()
