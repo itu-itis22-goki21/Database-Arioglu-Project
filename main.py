@@ -8,9 +8,9 @@ app = Flask(__name__)
 # MySQL connection configuration
 db_config = {
     'user': 'root',
-    'password': 'Qweasdqwe123.',
+    'password': 'admin',
     'host': 'localhost',
-    'database': "database"
+    'database': "test"
 }
 
 # Function to connect to the MySQL database
@@ -204,7 +204,7 @@ def insert_country():
 def medal():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM medal ORDER BY Athlete_short_name")  # Ensure that the table name is correct
+    cursor.execute("SELECT * FROM medal ")  # Ensure that the table name is correct
     medals = cursor.fetchall() 
     cursor.close()
     conn.close()
