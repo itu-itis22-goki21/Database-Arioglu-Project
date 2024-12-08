@@ -95,16 +95,16 @@
         }
         function openUpdateModal(id) {
             // Close the current modal overlay
-            closeModal(id);
+            closeModal("modal-"+id);
 
             // Open the update modal
-            const updateModal = document.getElementById('update-modal');
+            const updateModal = document.getElementById('update-modal-'+id);
             updateModal.style.display = 'flex';
         }
 
         // Close Update Modal
-        function closeUpdateModal() {
-            const updateModal = document.getElementById('update-modal');
+        function closeUpdateModal(id) {
+            const updateModal = document.getElementById('update-modal-'+id);
             updateModal.style.display = 'none';
         }
     </script>
@@ -130,28 +130,28 @@
                     <input type="text" id="event-status" name="event_status" required><br><br>
                     <label for="time">Event Time:</label>
                     <input type="text" id="time" name="time" required><br><br>
-                    <label for="discipline">Discipline:</label>
-                    <input type="text" id="discipline" name="discipline" required><br><br>
+                    <label for="discipline-id">Discipline ID:</label>
+                    <input type="text" id="discipline-id" name="discipline_id" required><br><br>
                     <button type="submit">Submit</button>
                 </form>
             </div>
         </div>
-        {% for medal in medals %}
-        <div class="modal-overlay" id="update-modal" onclick="closeUpdateModal('update-modal')">
+        {% for event in events %}
+        <div class="modal-overlay" id="update-modal-{{loop.index}}" onclick="closeUpdateModal('{{loop.index}}')">
             <div class="modal-content" onclick="event.stopPropagation()">
-                <span class="close-button" onclick="closeUpdateModal('update-modal')">&times;</span>
-                <h2>Add a New Event</h2>
+                <span class="close-button" onclick="closeUpdateModal('{{loop.index}}')">&times;</span>
+                <h2>Update Event</h2>
                 <form action="{{ url_for('update_event')}}?event={{event.Event_id}} " method="post">
                     <label for="event-stage">Event Stage:</label>
-                    <input type="text" id="event-stage" name="event_stage" placeholder="{{ medal.Medal_type }}" required><br><br>
+                    <input type="text" id="event-stage" name="event_stage" value="{{ event.Event_stage }}" required><br><br>
                     <label for="location">Location:</label>
-                    <input type="text" id="location" name="location"placeholder="{{ medal.Medal_type }}" required><br><br>
+                    <input type="text" id="location" name="location" value="{{ event.Location }}" required><br><br>
                     <label for="event-status">Event Status:</label>
-                    <input type="text" id="event-status" name="event_status"placeholder="{{ medal.Medal_type }}" required><br><br>
+                    <input type="text" id="event-status" name="event_status" value="{{ event.Event_status }}" required><br><br>
                     <label for="time">Event Time:</label>
-                    <input type="text" id="time" name="time"placeholder="{{ medal.Medal_type }}" required><br><br>
+                    <input type="text" id="time" name="time" value="{{ event.Time }}" required><br><br>
                     <label for="discipline">Discipline:</label>
-                    <input type="text" id="discipline" name="discipline"placeholder="{{ medal.Medal_type }}" required><br><br>
+                    <input type="text" id="discipline" name="discipline" value="{{ event.Discipline_id }}" required><br><br>
                     <button type="submit">Submit</button>
                 </form>
             </div>
@@ -175,7 +175,7 @@
                 <p><strong>Time:</strong> {{ event.Time }}</p>
                 <p><strong>Discipline_ID:</strong><a href="{{ url_for('discipline') }}?discipline={{ event.Discipline_id }}"> {{ event.Discipline_id }}</a></p>
                 <div style="text-align: left;">
-                    <button onclick="openUpdateModal('{{ event.Event_id }}')">Update</button>
+                    <button onclick="openUpdateModal('{{loop.index}}')">Update</button>
                 </div>
                 <form action="{{ url_for('delete_event') }}?events={{ event.Event_id }}" method="post">
                     <button href="{{ url_for('events')}}"style="color: red;">Delete</button>

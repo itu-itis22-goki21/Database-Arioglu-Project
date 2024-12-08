@@ -118,13 +118,13 @@
             closeModal(id);
 
             // Open the update modal
-            const updateModal = document.getElementById('update-modal');
+            const updateModal = document.getElementById('update-modal-'+id);
             updateModal.style.display = 'flex';
         }
 
         // Close Update Modal
-        function closeUpdateModal() {
-            const updateModal = document.getElementById('update-modal');
+        function closeUpdateModal(id) {
+            const updateModal = document.getElementById('update-modal-'+id);
             updateModal.style.display = 'none';
         }
     </script>
@@ -148,21 +148,15 @@
     
                 <label for="medal-code">Medal Code:</label>
                 <input type="text" id="medal-code" name="medal_code" required><br><br>
-    
-                <label for="athlete-short-name">Athlete Short Name:</label>
-                <input type="text" id="athlete-short-name" name="athlete_short_name" required><br><br>
 
-                <label for="athlete-name">Athlete Name:</label>
-                <input type="text" id="athlete-name" name="athlete_name" required><br><br>
-    
                 <label for="athlete-sex">Sex:</label>
                 <input type="text" id="athlete-sex" name="athlete_sex" required><br><br>
+
+                <label for="medal-date">Date:</label>
+                <input type="text" id="medal-date" name="medal_date" required><br><br>
     
-                <label for="event">Event:</label>
-                <input type="text" id="event" name="event_stage" required><br><br>
-    
-                <label for="country">Country:</label>
-                <input type="text" id="country" name="country" required><br><br>
+                <label for="event">Event ID:</label>
+                <input type="text" id="event" name="event_id" required><br><br>
     
                 <label for="country-code">Country Code:</label>
                 <input type="text" id="country-code" name="country_code" required><br><br>
@@ -173,34 +167,28 @@
     </div>
 
     {% for medal in medals %}
-    <div class="modal-overlay" id="update-modal" onclick="closeUpdateModal()">
+    <div class="modal-overlay" id="update-modal-{{ loop.index }}" onclick="closeUpdateModal('{{ loop.index }}')">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <span class="close-button" onclick="closeUpdateModal()">&times;</span>
+            <span class="close-button" onclick="closeUpdateModal('{{ loop.index }}')">&times;</span>
             <h2>Update This Medal</h2>
             <form action="{{ url_for('update_medal') }}?medal={{ medal.Medal_id }}" method="post">
                 <label for="medal-type">Medal Type:</label>
-                <input type="text" id="medal-type" name="medal_type" placeholder="{{ medal.Medal_type }}" required><br><br>
+                <input type="text" id="medal-type" name="medal_type" value="{{ medal.Medal_type }}" required><br><br>
         
                 <label for="medal-code">Medal Code:</label>
-                <input type="text" id="medal-code" name="medal_code" placeholder="{{ medal.Medal_code }}" required><br><br>
-        
-                <label for="athlete-short-name">Athlete Short Name:</label>
-                <input type="text" id="athlete-short-name" name="athlete_short_name" placeholder="{{ medal.Athlete_short_name }}" required><br><br>
-    
-                <label for="name">Athlete Name:</label>
-                <input type="text" id="name" name="athlete_name" placeholder="{{ medal.Name }}" required><br><br>
+                <input type="text" id="medal-code" name="medal_code" value="{{ medal.Medal_code }}" required><br><br>
         
                 <label for="athlete-sex">Sex:</label>
-                <input type="text" id="athlete-sex" name="athlete_sex" placeholder="{{ medal.Athlete_sex }}" required><br><br>
+                <input type="text" id="athlete-sex" name="athlete_sex" value="{{ medal.Athlete_sex }}" required><br><br>
         
-                <label for="event">Event:</label>
-                <input type="text" id="event" name="event_stage" placeholder="{{ medal.Event_stage }}" required><br><br>
-        
-                <label for="country">Country:</label>
-                <input type="text" id="country" name="country" placeholder="{{ medal.Country }}" required><br><br>
+                <label for="event-id">Event ID:</label>
+                <input type="text" id="event-id" name="event_id" value="{{ medal.Event_id }}" required><br><br>
+                
+                <label for="medal-date">Event Date:</label>
+                <input type="text" id="medal-date" name="medal_date" value="{{ medal.Medal_date }}" required><br><br>  
         
                 <label for="country-code">Country Code:</label>
-                <input type="text" id="country-code" name="country_code" placeholder="{{ medal.Country_code }}" required><br><br>
+                <input type="text" id="country-code" name="country_code" value="{{ medal.Country_code }}" required><br><br>
         
                 <button type="submit">Submit</button>
             </form>
@@ -210,23 +198,23 @@
 
     <div class="container">
         {% for medal in medals %}
-        <div class="medal-box" onclick="openModal('{{ medal.Medal_id }}')">
+        <div class="medal-box" onclick="openModal('{{ loop.index }}')">
             <div class="medal-type">{{ medal.Medal_type }}</div>
-            <div class="athlete-name">{{ medal.Name }}</div>
         </div>
 
         <!-- Modal Overlay for each medal -->
-        <div class="modal-overlay" id="modal-{{ medal.Medal_id }}" onclick="closeModal('{{ medal.Medal_id }}')">
+        <div class="modal-overlay" id="modal-{{ loop.index}}" onclick="closeModal('{{ loop.index }}')">
             <div class="modal-content" onclick="event.stopPropagation()">
-                <span class="close-button" onclick="closeModal('{{ medal.Medal_id }}')">&times;</span>
+                <span class="close-button" onclick="closeModal('{{ loop.index }}')">&times;</span>
                 <p><strong>Medal Type:</strong> {{ medal.Medal_type }}</p>
                 <p><strong>Code:</strong> {{ medal.Medal_code }}</p>
+                <p><strong>Gender:</strong> {{ medal.Athlete_sex }}</p>
                 <p><strong>Date:</strong> {{ medal.Medal_date }}</p>
                 <p><strong>Event_ID:</strong><a href="{{ url_for('events') }}?events={{ medal.Event_id }}"> {{ medal.Event_id}}</a></p>
                 <p><strong>Country:</strong> {{ medal.Country }}</p>
                 <p><strong>Country code:</strong> <a href="{{ url_for('country') }}?country={{ medal.Country_code }}">{{ medal.Country_code }}</a></p>
                 <div style="text-align: left;">
-                    <button onclick="openUpdateModal('{{ medal.Medal_id }}')">Update</button>
+                    <button onclick="openUpdateModal('{{ loop.index }}')">Update</button>
                 </div>
                 <form action="{{ url_for('delete_medal') }}?medal={{ medal.Medal_id }}" method="post">
                     <button href="{{ url_for('medal') }}" style="color: red;">Delete</button>
