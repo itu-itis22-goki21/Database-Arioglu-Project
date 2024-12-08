@@ -213,7 +213,6 @@
                 <p><strong>Gender:</strong> {{ medal.Athlete_sex }}</p>
                 <p><strong>Date:</strong> {{ medal.Medal_date }}</p>
                 <p><strong>Event_ID:</strong><a href="{{ url_for('events') }}?events={{ medal.Event_id }}"> {{ medal.Event_id}}</a></p>
-                <p><strong>Country:</strong> {{ medal.Country }}</p>
                 <p><strong>Country code:</strong> <a href="{{ url_for('country') }}?country={{ medal.Country_code }}">{{ medal.Country_code }}</a></p>
                 <div style="text-align: left;">
                     <button onclick="openUpdateModal('{{ loop.index }}')">Update</button>
