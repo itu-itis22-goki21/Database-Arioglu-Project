@@ -221,9 +221,7 @@
                 <span class="close-button" onclick="closeModal('{{ medal.Medal_id }}')">&times;</span>
                 <p><strong>Medal Type:</strong> {{ medal.Medal_type }}</p>
                 <p><strong>Code:</strong> {{ medal.Medal_code }}</p>
-                <p><strong>Short Name:</strong> {{ medal.Athlete_short_name }}</p>
-                <p><strong>Name:</strong> {{ medal.Name }}</p>
-                <p><strong>Sex:</strong> {{ medal.Athlete_sex }}</p>
+                <p><strong>Date:</strong> {{ medal.Medal_date }}</p>
                 <p><strong>Event_ID:</strong><a href="{{ url_for('events') }}?events={{ medal.Event_id }}"> {{ medal.Event_id}}</a></p>
                 <p><strong>Country:</strong> {{ medal.Country }}</p>
                 <p><strong>Country code:</strong> <a href="{{ url_for('country') }}?country={{ medal.Country_code }}">{{ medal.Country_code }}</a></p>
