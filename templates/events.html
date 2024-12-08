@@ -169,10 +169,11 @@
             <div class="modal-content" onclick="event.stopPropagation()">
                 <span class="close-button" onclick="closeModal('modal-{{ loop.index }}')">&times;</span>
                 <p><strong>Event Stage:</strong> {{ event.Event_stage }}</p>
+                <p><strong>Event_ID:</strong> {{ event.Event_id }}</p>
                 <p><strong>Location:</strong> {{ event.Location }}</p>
                 <p><strong>Status:</strong> {{ event.Event_status }}</p>
                 <p><strong>Time:</strong> {{ event.Time }}</p>
-                <p><strong>Discipline:</strong><a href="{{ url_for('discipline') }}?discipline={{ event.Discipline }}"> {{ event.Discipline }}</a></p>
+                <p><strong>Discipline_ID:</strong><a href="{{ url_for('discipline') }}?discipline={{ event.Discipline_id }}"> {{ event.Discipline_id }}</a></p>
                 <div style="text-align: left;">
                     <button onclick="openUpdateModal('{{ event.Event_id }}')">Update</button>
                 </div>

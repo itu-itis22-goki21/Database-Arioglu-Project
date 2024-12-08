@@ -133,6 +133,7 @@
         <div class="modal-overlay" id="modal-{{ loop.index }}" onclick="closeModal('modal-{{ loop.index }}')">
             <div class="modal-content" onclick="event.stopPropagation()">
                 <span class="close-button" onclick="closeModal('modal-{{ loop.index }}')">&times;</span>
+                <p><strong>Discipline_ID:</strong>{{ discipline.Discipline_id}}</p>
                 <p><strong>Discipline:</strong> {{ discipline.Discipline }}</p>
                 <p><strong>Female:</strong> {{ discipline.F }}</p>
                 <p><strong>Male:</strong> {{ discipline.M }}</p>

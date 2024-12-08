@@ -204,7 +204,7 @@ def insert_country():
 def medal():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM medal ")  # Ensure that the table name is correct
+    cursor.execute("SELECT * FROM medal ORDER BY Athlete_short_name")  # Ensure that the table name is correct
     medals = cursor.fetchall() 
     cursor.close()
     conn.close()
@@ -512,7 +512,7 @@ def discipline():
     cursor = conn.cursor(dictionary=True)
 
     if discipline_name:
-        cursor.execute("SELECT * FROM discipline WHERE Discipline = %s", (discipline_name,))
+        cursor.execute("SELECT * FROM discipline WHERE Discipline_id = %s", (discipline_name,))
     else:
         cursor.execute("SELECT * FROM discipline")
     disciplines = cursor.fetchall()
@@ -569,7 +569,13 @@ def insert_discipline():
 def events():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM events_")  # Ensure table name matches
+
+    event_id = request.args.get('events')
+
+    if event_id:
+        cursor.execute("SELECT * FROM events_ WHERE event_id = %s", (event_id,))
+    else:
+        cursor.execute("SELECT * FROM events_")
     events = cursor.fetchall()
     cursor.close()
     conn.close()

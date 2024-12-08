@@ -142,9 +142,8 @@
                 <p><strong>Name:</strong> {{ official.Tech_name }}</p>
                 <p><strong>Gender:</strong> {{ official.Gender }}</p>
                 <p><strong>Birth Date:</strong> {{ official.Birth_date }}</p>
-                <p><strong>Country:</strong> {{ official.Country }}</p>
                 <p><strong>Country Code:</strong><a href="{{ url_for('country') }}?country={{ official.Country_code }}"> {{ official.Country_code }}</a></p>
-                <p><strong>Discipline:</strong><a href="{{ url_for('discipline') }}?discipline={{ official.Discipline }}">{{ official.Discipline }}</a> </p>
+                <p><strong>Discipline:</strong><a href="{{ url_for('discipline') }}?discipline={{ official.Discipline_id }}">{{ official.Discipline_id }}</a> </p>
                 <p><strong>Function:</strong> {{ official.Function }}</p>
                 <form action="{{ url_for('delete_tech') }}?tech={{ official.Tech_id }}" method="post">
                     <button href="{{ url_for('tech')}}"style="color: red;">Delete</button>

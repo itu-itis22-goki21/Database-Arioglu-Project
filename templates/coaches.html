@@ -175,7 +175,7 @@
                 <p><strong>Gender:</strong> {{ coach.Gender }}</p>
                 <p><strong>Birth Date:</strong> {{ coach.Birth_date }}</p>
                 <p><strong>Country:</strong> <a href="{{ url_for('country') }}?country={{ coach.Country_code }}">{{ coach.Country_code }}</a></p>
-                <p><strong>Discipline:</strong><a href="{{ url_for('discipline') }}?discipline={{ coach.Discipline }}"> {{ coach.Discipline }}</a></p>
+                <p><strong>Discipline_ID:</strong><a href="{{ url_for('discipline') }}?discipline={{ coach.Discipline_id }}"> {{ coach.Discipline_id }}</a></p>
                 <p><strong>Function:</strong> {{ coach.Function }}</p>
                 <div style="text-align: left;">
                     <button onclick="openUpdateModal('{{ coach.Coach_id }}')">Update</button>
