@@ -90,18 +90,25 @@
         }
     </style>
     <script>
-        function openModal(id) {
-            const modal = document.getElementById(id);
-            if (modal) {
-                modal.style.display = 'flex';
-            }
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
         }
-
-        function closeModal(id) {
-            const modal = document.getElementById(id);
-            if (modal) {
-                modal.style.display = 'none';
-            }
+    
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+    
+        function openUpdateModal(countryCode) {
+            // Close any other open modal first (if applicable)
+            const openModals = document.querySelectorAll('.modal-overlay[style*="display: flex"]');
+            openModals.forEach(modal => closeModal(modal.id));
+            
+            // Then open the update modal
+            document.getElementById('update-modal-' + countryCode).style.display = 'flex';
+        }
+    
+        function closeUpdateModal(countryCode) {
+            document.getElementById('update-modal-' + countryCode).style.display = 'none';
         }
     </script>
 </head>
@@ -121,15 +128,20 @@
                 action="{{ url_for('insert_country') }}" 
                 method="post">
                 <label for="country-code">Country Code:</label>
-                <input type="text" id="country-code" name="country" required><br><br>
+                <input type="text" id="country-code" name="country_code" required><br><br>
+
                 <label for="gold">Gold:</label>
                 <input type="number" id="gold" name="gold" required><br><br>
+
                 <label for="silver">Silver:</label>
                 <input type="number" id="silver" name="silver" required><br><br>
+
                 <label for="bronze">Bronze:</label>
                 <input type="number" id="bronze" name="bronze" required><br><br>
+
                 <label for="rank">Rank:</label>
                 <input type="number" id="rank" name="rank" required><br><br>
+
                 <button type="submit">Submit</button>
             </form>
         </div>
@@ -142,6 +154,29 @@
             <div class="country-rank">{{ country.Rank }}</div>
         </div>
 
+        <div class="modal-overlay" id="update-modal-{{ country.Country_code }}" onclick="closeUpdateModal('{{ country.Country_code }}')">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <span class="close-button" onclick="closeUpdateModal('{{ country.Country_code }}')">&times;</span>
+                <h2>Update This Country</h2>
+                <form action="{{ url_for('update_country') }}" method="post">
+                    <input type="hidden" name="country_code" value="{{ country.Country_code }}">
+                
+                    <label for="gold">Gold:</label>
+                    <input type="number" id="gold" name="gold" value="{{ country.Gold }}" required><br><br>
+                
+                    <label for="silver">Silver:</label>
+                    <input type="number" id="silver" name="silver" value="{{ country.Silver }}" required><br><br>
+                
+                    <label for="bronze">Bronze:</label>
+                    <input type="number" id="bronze" name="bronze" value="{{ country.Bronze }}" required><br><br>
+                
+                    <label for="rank">Rank:</label>
+                    <input type="number" id="rank" name="rank" value="{{ country.Rank }}" required><br><br>
+                    
+                    <button type="submit">Submit</button>
+                </form>                
+            </div>
+        </div>
         <!-- Modal Overlay for each country -->
         <div class="modal-overlay" id="modal-{{ loop.index }}" onclick="closeModal('modal-{{ loop.index }}')">
             <div class="modal-content" onclick="event.stopPropagation()">
@@ -152,6 +187,9 @@
                 <p><strong>Bronze:</strong> {{ country.Bronze }}</p>
                 <p><strong>Total:</strong> {{ country.Total }}</p>
                 <p><strong>Rank:</strong> {{ country.Rank }}</p>
+                <div style="text-align: left;">
+                    <button onclick="openUpdateModal('{{ country.Country_code }}')">Update</button>
+                </div>
                 <form action="{{ url_for('delete_country') }}?country={{ country.Country_code }}" method="post">
                     <button href="{{ url_for('country')}}"style="color: red;">Delete</button>
                 </form>

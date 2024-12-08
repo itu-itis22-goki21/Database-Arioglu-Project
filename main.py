@@ -8,9 +8,9 @@ app = Flask(__name__)
 # MySQL connection configuration
 db_config = {
     'user': 'root',
-    'password': 'admin',
+    'password': 'Qweasdqwe123.',
     'host': 'localhost',
-    'database': "test"
+    'database': "database"
 }
 
 # Function to connect to the MySQL database
@@ -59,21 +59,21 @@ def insert_coach():
     gender = request.form.get('gender')
     birth_date = request.form.get('birth_date')
     country_code = request.form.get('country_code')
-    discipline = request.form.get('discipline')
+    discipline_id = request.form.get('discipline_id')
     function = request.form.get('function')
 
     # Insert the new coach into the database
     conn = get_db_connection()
     cursor = conn.cursor()
     query = """
-        INSERT INTO coaches (Coach_name, Gender, Birth_date, Country_code, Discipline, coaches.Function)
+        INSERT INTO coaches (Coach_name, Gender, Birth_date, Country_code, Discipline_id, coaches.Function)
         VALUES (%s, %s, %s, %s, %s, %s)
     """
-    cursor.execute(query, (name, gender, birth_date, country_code, discipline, function))
+    cursor.execute(query, (name, gender, birth_date, country_code, discipline_id, function))
     update_query = """
     UPDATE `coaches` a
     JOIN `discipline` d
-    ON a.`Discipline` = d.`Discipline`
+    ON a.`Discipline_id` = d.`Discipline_id`
     SET a.`Discipline_id` = d.`Discipline_id`
     WHERE a.`Discipline_id` IS NULL;
         """
@@ -171,11 +171,12 @@ def delete_country():
 @app.route('/insert_country', methods=['POST'])
 def insert_country():
     # Retrieve form data
-    country_code = request.form.get('country')
+    country_code = request.form.get('country_code')
     gold = int(request.form.get('gold'))
     silver = int(request.form.get('silver'))
     bronze = int(request.form.get('bronze'))
     rank = int(request.form.get('rank'))
+    total = gold + silver + bronze
     
     
     total = gold + silver + bronze
@@ -199,6 +200,40 @@ def insert_country():
         # Redirect back to the countries page
     return "<script>alert('Country added successfully!'); window.location.href='/country';</script>"
 
+@app.route('/update_country', methods=['POST'])
+def update_country():
+    # Retrieve form data
+    country_code = request.form.get('country_code')
+    gold = int(request.form.get('gold'))
+    silver = int(request.form.get('silver'))
+    bronze = int(request.form.get('bronze'))
+    rank = int(request.form.get('rank'))
+    total = gold + silver + bronze
+
+    # Connect to the database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    query = """
+    UPDATE country
+    SET Gold = %s,
+        Silver = %s,
+        Bronze = %s,
+        `Rank` = %s,
+        Total = %s
+    WHERE Country_code = %s
+    """
+
+    cursor.execute(query, (gold, silver, bronze, rank, total, country_code))
+
+    # Commit the changes
+    conn.commit()
+
+    # Close the database connection
+    cursor.close()
+    conn.close()
+
+    return "<script>alert('Country updated successfully!'); window.location.href='/country';</script>"
 
 @app.route("/medal")
 def medal():
@@ -346,23 +381,22 @@ def insert_tech():
     tech_name = request.form.get('tech_name')
     gender = request.form.get('gender')
     birth_date = request.form.get('birth_date')
-    country = request.form.get('country')
     country_code = request.form.get('country_code')
-    discipline = request.form.get('discipline')
+    discipline_id = request.form.get('discipline_id')
     function = request.form.get('function')
 
     # Insert the new tech official into the database
     conn = get_db_connection()
     cursor = conn.cursor()
     query = """
-        INSERT INTO tech_of (Tech_name, Gender, Birth_date, Country, Country_code, Discipline, tech_of.Function)
-        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO tech_of (Tech_name, Gender, Birth_date, Country_code, Discipline_id, tech_of.Function)
+        VALUES (%s, %s, %s, %s, %s, %s)
     """
-    cursor.execute(query, (tech_name, gender, birth_date, country, country_code, discipline, function))
+    cursor.execute(query, (tech_name, gender, birth_date, country_code, discipline_id, function))
     update_tech = """
     UPDATE `tech_of` a
     JOIN `discipline` d
-    ON a.`Discipline` = d.`Discipline`
+    ON a.`Discipline_id` = d.`Discipline_id`
     SET a.`Discipline_id` = d.`Discipline_id`
     WHERE a.`Discipline_id` IS NULL;
     """
@@ -374,7 +408,42 @@ def insert_tech():
     # Redirect back to the technical officials page
     return "<script>alert('Technical Official added successfully!'); window.location.href='/tech';</script>"
 
+@app.route('/update_tech', methods=['POST'])
+def update_tech():
+    # Retrieve form data
+    tech_id = request.form.get('tech_id')
+    tech_name = request.form.get('tech_name')
+    gender = request.form.get('gender')
+    birth_date = request.form.get('birth_date')
+    country_code = request.form.get('country_code')
+    discipline_id = request.form.get('discipline_id')
+    function = request.form.get('function')
 
+    # Connect to the database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    query = """
+    UPDATE tech_of
+    SET Tech_name = %s,
+        Gender = %s,
+        Birth_date = %s,
+        Country_code = %s,
+        Discipline_id = %s,
+        `Function` = %s
+    WHERE Tech_id = %s
+    """
+
+    cursor.execute(query, (tech_name, gender, birth_date, country_code, discipline_id, function, tech_id))
+
+    # Commit the changes
+    conn.commit()
+
+    # Close the database connection
+    cursor.close()
+    conn.close()
+
+    return "<script>alert('Technical Official updated successfully!'); window.location.href='/tech';</script>"
 
 @app.route('/athletes', methods=['GET'])
 def athletes():
@@ -429,7 +498,7 @@ def insert_athlete():
     Birth_place = request.form.get('birth_place')
     Birth_country = request.form.get('birth_country')
     Country_code = request.form.get('country_code')
-    Discipline = request.form.get('discipline')
+    Discipline_id = request.form.get('discipline_id')
 
 
     
@@ -440,14 +509,14 @@ def insert_athlete():
 
         # Insert data into the database
     query = """
-    INSERT INTO athletes (Athlete_name, Short_name, Gender, Birth_place, Birth_country, Country_code, Discipline)
+    INSERT INTO athletes (Athlete_name, Short_name, Gender, Birth_place, Birth_country, Country_code, Discipline_id)
     VALUES (%s, %s, %s, %s, %s, %s,%s); 
     """
-    cursor.execute(query, (Athlete_name, Short_name, Gender, Birth_place,Birth_country, Country_code,Discipline))
+    cursor.execute(query, (Athlete_name, Short_name, Gender, Birth_place,Birth_country, Country_code,Discipline_id))
     update_query = """
     UPDATE `athletes` a
     JOIN `discipline` d
-    ON a.`Discipline` = d.`Discipline`
+    ON a.`Discipline_id` = d.`Discipline_id`
     SET a.`Discipline_id` = d.`Discipline_id`
     WHERE a.`Discipline_id` IS NULL;
         """
@@ -539,10 +608,6 @@ def insert_discipline():
     discipline = request.form.get('discipline')
     F = int(request.form.get('F'))
     M = int(request.form.get('M'))
-    
-    
-    
-    
     Total = F + M
 
     # Connect to the database
@@ -561,8 +626,41 @@ def insert_discipline():
     cursor.close()
     conn.close()
 
-        # Redirect back to the countries page
+        # Redirect back to the discipline page
     return "<script>alert('Discipline added successfully!'); window.location.href='/discipline';</script>"
+
+@app.route('/update_discipline', methods=['POST'])
+def update_discipline():
+    # Retrieve form data
+    discipline_id = request.form.get('discipline_id')
+    discipline = request.form.get('discipline')
+    F = int(request.form.get('F'))
+    M = int(request.form.get('M'))
+    Total = F + M
+
+    # Connect to the database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    query = """
+    UPDATE discipline
+    SET Discipline = %s,
+        F = %s,
+        M = %s,
+        Total = %s
+    WHERE Discipline_id = %s
+    """
+
+    cursor.execute(query, (discipline, F, M, Total, discipline_id))
+
+    # Commit the changes
+    conn.commit()
+
+    # Close the database connection
+    cursor.close()
+    conn.close()
+
+    return "<script>alert('Discipline updated successfully!'); window.location.href='/discipline';</script>"
 
 
 @app.route('/events', methods=['GET'])
