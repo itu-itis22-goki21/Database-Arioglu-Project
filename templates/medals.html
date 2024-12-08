@@ -200,6 +200,7 @@
         {% for medal in medals %}
         <div class="medal-box" onclick="openModal('{{ loop.index }}')">
             <div class="medal-type">{{ medal.Medal_type }}</div>
+            <div class="athlete-name">{{ medal.Athlete_name }}</div>
         </div>
 
         <!-- Modal Overlay for each medal -->
@@ -208,6 +209,7 @@
                 <span class="close-button" onclick="closeModal('{{ loop.index }}')">&times;</span>
                 <p><strong>Medal Type:</strong> {{ medal.Medal_type }}</p>
                 <p><strong>Code:</strong> {{ medal.Medal_code }}</p>
+                <p><strong>Athlete Name:</strong> {{ medal.Athlete_name }}</p>
                 <p><strong>Gender:</strong> {{ medal.Athlete_sex }}</p>
                 <p><strong>Date:</strong> {{ medal.Medal_date }}</p>
                 <p><strong>Event_ID:</strong><a href="{{ url_for('events') }}?events={{ medal.Event_id }}"> {{ medal.Event_id}}</a></p>
