@@ -501,7 +501,7 @@ def update_athlete():
     query = """
     UPDATE athletes
     SET Athlete_name = %s, Short_name = %s, Gender = %s, Birth_place = %s, 
-        Birth_country = %s, Country_code = %s, Discipline = %s
+        Birth_country = %s, Country_code = %s, Discipline_id = %s
     WHERE Athlete_id = %s;
     """
     athlete_id = request.args.get('id')  # Assuming the athlete ID is passed in the URL
