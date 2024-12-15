@@ -420,12 +420,15 @@ def athletes():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     Athlete_id = request.args.get('athletes')
+    Country_code = request.args.get('country_code')
     cursor.execute("SELECT COUNT(*) FROM athletes")
     total_athletes = cursor.fetchone()['COUNT(*)']
     total_pages = math.ceil(total_athletes / per_page)
     # Fetch the total count of athletes to calculate total pages
     if Athlete_id:
         cursor.execute("SELECT * FROM athletes WHERE Athlete_id = %s", (Athlete_id,))
+    if Country_code:
+        cursor.execute("SELECT * FROM athletes WHERE Country_code = %s", (Country_code,))
     else:
         
     

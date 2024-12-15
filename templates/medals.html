@@ -136,7 +136,7 @@
     <div style="text-align: center;">
         <button onclick="openInsertModal()">Insert Medal</button>
     </div>
-    
+    <br>
     <!-- Insert Medal Modal -->
     <div class="modal-overlay" id="insert-modal" onclick="closeInsertModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
@@ -210,7 +210,6 @@
                 <p><strong>Medal Type:</strong> {{ medal.Medal_type }}</p>
                 <p><strong>Code:</strong> {{ medal.Medal_code }}</p>
                 <p><strong>Athlete Name:</strong> {{ medal.Athlete_name }}</p>
-                <p><strong>Athlete ID:</strong><a href="{{ url_for('athletes') }}?athletes={{ medal.Athlete_id }}"> {{medal.Athlete_id}}</a></p>
                 <p><strong>Gender:</strong> {{ medal.Athlete_sex }}</p>
                 <p><strong>Date:</strong> {{ medal.Medal_date }}</p>
                 <p><strong>Event_ID:</strong><a href="{{ url_for('events') }}?events={{ medal.Event_id }}"> {{ medal.Event_id}}</a></p>

@@ -110,6 +110,10 @@
         function closeUpdateModal(countryCode) {
             document.getElementById('update-modal-' + countryCode).style.display = 'none';
         }
+        function openAthletesPage(countryCode) {
+        // Redirect to the athletes page with the country code as a query parameter
+            window.location.href = `/athletes?country_code=${encodeURIComponent(countryCode)}`;
+        }
     </script>
 </head>
 <body>
@@ -187,6 +191,9 @@
                 <p><strong>Bronze:</strong> {{ country.Bronze }}</p>
                 <p><strong>Total:</strong> {{ country.Total }}</p>
                 <p><strong>Rank:</strong> {{ country.Rank }}</p>
+                <a href="{{ url_for('athletes', country_code=country.Country_code) }}">
+                    <button>Show Athletes</button>
+                </a>                
                 <div style="text-align: left;">
                     <button onclick="openUpdateModal('{{ country.Country_code }}')">Update</button>
                 </div>
