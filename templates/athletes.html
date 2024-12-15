@@ -112,6 +112,14 @@
             margin-right: 8px;
             font-size: 18px;
         }
+        .country-info {
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+
         
     </style>
     <script>
@@ -137,6 +145,9 @@
     </a>
     
     <h1>Athletes List</h1>
+    {% if country_code %}
+        <p class="country-info">Athletes from <strong>{{ country_code }}</strong></p>
+    {% endif %}
 
     <div style="text-align: center;">
         <button onclick="openModal('insert-modal')">Insert Athlete</button>
