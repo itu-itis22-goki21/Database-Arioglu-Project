@@ -445,7 +445,7 @@ def athletes():
     
     
     # Render the athletes page with the current page and total pages
-    return render_template('athletes.html', athletes=athletes, page=page, total_pages=total_pages)
+    return render_template('athletes.html',country_code=Country_code, athletes=athletes, page=page, total_pages=total_pages)
 
 @app.route('/delete_athlete>', methods=['POST'])
 def delete_athlete():
