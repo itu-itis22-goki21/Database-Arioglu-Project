@@ -12,6 +12,7 @@
             font-family: Arial, sans-serif;
             margin: 20px;
             color: white;
+            overflow-x: hidden;
         }
         h1 {
             text-align: center;
@@ -33,11 +34,13 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
-        .event-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-            background-color: #333;
+        .event-card.appear {
+            opacity: 1;
+            transform: translateY(0);
         }
         .event-title {
             font-weight: bold;
@@ -78,8 +81,51 @@
             font-weight: bold;
             font-size: 16px;
         }
+
+        .return-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #00bfff;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .return-home:hover {
+            background-color: #009acd;
+        }
+
+        .return-home::before {
+            content: '←';
+            margin-right: 8px;
+            font-size: 18px;
+        }
     </style>
     <script>
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            const cards = document.querySelectorAll(".event-card");
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("appear");
+                    }
+                });
+            }, {
+                threshold: 0.2
+            });
+
+            cards.forEach(card => observer.observe(card));
+        });
+
         function openModal(id) {
             const modal = document.getElementById(id);
             if (modal) {
@@ -94,15 +140,11 @@
             }
         }
         function openUpdateModal(id) {
-            // Close the current modal overlay
             closeModal("modal-"+id);
-
-            // Open the update modal
             const updateModal = document.getElementById('update-modal-'+id);
             updateModal.style.display = 'flex';
         }
 
-        // Close Update Modal
         function closeUpdateModal(id) {
             const updateModal = document.getElementById('update-modal-'+id);
             updateModal.style.display = 'none';
@@ -110,6 +152,10 @@
     </script>
 </head>
 <body>
+
+    <a href="{{ url_for('home') }}" class="return-home">
+        Return to Homepage
+    </a>
 
     <h1>Events List</h1>
 
