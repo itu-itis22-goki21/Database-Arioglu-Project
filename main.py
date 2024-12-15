@@ -8,9 +8,9 @@ app = Flask(__name__)
 # MySQL connection configuration
 db_config = {
     'user': 'root',
-    'password': 'Qweasdqwe123.',
+    'password': 'admin',
     'host': 'localhost',
-    'database': "database"
+    'database': "test"
 }
 
 # Function to connect to the MySQL database
@@ -419,20 +419,27 @@ def athletes():
     # Connect to the database and retrieve athletes data with pagination
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    
-    # Fetch the total count of athletes to calculate total pages
+    Athlete_id = request.args.get('athletes')
     cursor.execute("SELECT COUNT(*) FROM athletes")
     total_athletes = cursor.fetchone()['COUNT(*)']
+    total_pages = math.ceil(total_athletes / per_page)
+    # Fetch the total count of athletes to calculate total pages
+    if Athlete_id:
+        cursor.execute("SELECT * FROM athletes WHERE Athlete_id = %s", (Athlete_id,))
+    else:
+        
     
-    # Fetch athletes for the current page
-    cursor.execute("SELECT * FROM athletes LIMIT %s OFFSET %s", (per_page, offset))
+        # Fetch athletes for the current page
+        cursor.execute("SELECT * FROM athletes LIMIT %s OFFSET %s", (per_page, offset))
+    
+    
     athletes = cursor.fetchall()
     
     cursor.close()
     conn.close()
     
     # Calculate the total number of pages
-    total_pages = math.ceil(total_athletes / per_page)
+    
     
     # Render the athletes page with the current page and total pages
     return render_template('athletes.html', athletes=athletes, page=page, total_pages=total_pages)
