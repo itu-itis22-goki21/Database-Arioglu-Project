@@ -27,14 +27,21 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
+
+            /* Initial state for animation */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
         .medal-box:hover {
             transform: translateY(-5px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
             background-color: #e9e9e9;
         }
-        .medal-type {
-            font-weight: bold;
+        /* Visible state for animation */
+        .medal-box.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         .athlete-name {
             margin-top: 5px;
@@ -74,23 +81,50 @@
             font-weight: bold;
             font-size: 16px;
         }
-
-        /* Button Styling for Insert */
-        button {
-            cursor: pointer;
+        .return-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
             padding: 10px 20px;
-            background-color: #fff;
-            border: 2px solid firebrick;
-            border-radius: 5px;
+            background-color: #FF7F50;
+            color: white;
             font-size: 16px;
-            transition: background-color 0.3s, color 0.3s;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
         }
-        button:hover {
-            background-color: firebrick;
-            color: #fff;
+
+        .return-home:hover {
+            background-color: #009acd;
+        }
+
+        .return-home::before {
+            content: '←';
+            margin-right: 8px;
+            font-size: 18px;
         }
     </style>
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const medalBoxes = document.querySelectorAll(".medal-box");
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                        observer.unobserve(entry.target); // Stop observing once visible
+                    }
+                });
+            });
+
+            medalBoxes.forEach((box) => {
+                observer.observe(box);
+            });
+        });
+
         function openModal(id) {
             const modal = document.getElementById('modal-' + id);
             modal.style.display = 'flex'; // Show the modal
@@ -130,13 +164,18 @@
     </script>
 </head>
 <body>
+
+    <a href="{{ url_for('home') }}" class="return-home">
+        Return to Homepage
+    </a>
+
     <h1>Medal Table</h1>
 
     <!-- Insert Button -->
     <div style="text-align: center;">
         <button onclick="openInsertModal()">Insert Medal</button>
     </div>
-    <br>
+    
     <!-- Insert Medal Modal -->
     <div class="modal-overlay" id="insert-modal" onclick="closeInsertModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
@@ -210,6 +249,7 @@
                 <p><strong>Medal Type:</strong> {{ medal.Medal_type }}</p>
                 <p><strong>Code:</strong> {{ medal.Medal_code }}</p>
                 <p><strong>Athlete Name:</strong> {{ medal.Athlete_name }}</p>
+                <p><strong>Athlete ID:</strong><a href="{{ url_for('athletes') }}?athletes={{ medal.Athlete_id }}"> {{medal.Athlete_id}}</a></p>
                 <p><strong>Gender:</strong> {{ medal.Athlete_sex }}</p>
                 <p><strong>Date:</strong> {{ medal.Medal_date }}</p>
                 <p><strong>Event_ID:</strong><a href="{{ url_for('events') }}?events={{ medal.Event_id }}"> {{ medal.Event_id}}</a></p>

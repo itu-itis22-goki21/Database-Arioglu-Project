@@ -87,6 +87,32 @@
             background-color: firebrick;
             color: #fff;
         }
+        .return-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #333333;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .return-home:hover {
+            background-color: #009acd;
+        }
+
+        .return-home::before {
+            content: '←';
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
     </style>
     <script>
         function openModal(id) {
@@ -106,6 +132,10 @@
 </head>
 <body>
 
+    <a href="{{ url_for('home') }}" class="return-home">
+        Return to Homepage
+    </a>
+    
     <h1>Athletes List</h1>
 
     <div style="text-align: center;">

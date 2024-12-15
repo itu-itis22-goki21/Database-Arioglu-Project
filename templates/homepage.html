@@ -3,56 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>beijing olympics Management Homepage</title>
+    <title>Beijing Olympics Management Homepage</title>
     <style>
+
         body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #f0f8ff;
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
             margin: 0;
-        }
-        h1 {
-            margin-top: 50px;
-            color: #4a4a4a;
-        }
-        .links-container {
-            margin-top: 20px;
+            padding: 0;
             display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .link-button {
-            display: inline-block;
-            text-decoration: none;
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             text-align: center;
-            width: 200px;
+            overflow: hidden; 
+            position: relative;
         }
+
+        h1 {
+            font-size: 3em;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .links-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 80%;
+            max-width: 900px;
+        }
+
+        .link-button {
+            display: block;
+            text-decoration: none;
+            background: linear-gradient(45deg, #ff6f61, #ff9966);
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease-in-out;
+            opacity: 0.9;
+        }
+
         .link-button:hover {
-            background-color: #45a049;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #ff9966, #ff6f61);
+            opacity: 1;
+        }
+
+        .link-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .links-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .links-container {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 2em;
+            }
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: moveParticle 10s infinite;
+        }
+
+        @keyframes moveParticle {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(var(--x), var(--y));
+            }
+        }
+
+        /* Random Particle Colors */
+        .particle-1 {
+            background-color: rgba(255, 99, 71, 0.7);
+        }
+
+        .particle-2 {
+            background-color: rgba(60, 179, 113, 0.7);
+        }
+
+        .particle-3 {
+            background-color: rgba(135, 206, 250, 0.7);
+        }
+
+        .particle-4 {
+            background-color: rgba(255, 215, 0, 0.7);
         }
     </style>
 </head>
 <body>
 
-    <h1>Sports Management</h1>
-    <div class="links-container">
-
-        <a href="{{ url_for('medal') }}">medal</a>
-        <a href="{{ url_for('athletes') }}">athletes</a>
-        <a href="{{ url_for('coaches') }}">coaches</a>
-        <a href="{{ url_for('country') }}">country</a>
-        <a href="{{ url_for('tech') }}">tech</a>
-        <a href="{{ url_for('discipline')}}">discipline</a>
-        <a href="{{ url_for('events')}}">events</a>
+    <div>
+        <h1>Beijing Olympics Sports Management</h1>
+        <div class="links-container">
+            <a href="{{ url_for('medal') }}" class="link-button">Medal</a>
+            <a href="{{ url_for('athletes') }}" class="link-button">Athletes</a>
+            <a href="{{ url_for('coaches') }}" class="link-button">Coaches</a>
+            <a href="{{ url_for('country') }}" class="link-button">Country</a>
+            <a href="{{ url_for('tech') }}" class="link-button">Tech</a>
+            <a href="{{ url_for('discipline') }}" class="link-button">Discipline</a>
+            <a href="{{ url_for('events') }}" class="link-button">Events</a>
+        </div>
     </div>
+
+    <div class="particle particle-1" style="width: 20px; height: 20px; top: 10%; left: 25%; --x: 500px; --y: 300px;"></div>
+    <div class="particle particle-2" style="width: 30px; height: 30px; top: 30%; left: 40%; --x: -300px; --y: 500px;"></div>
+    <div class="particle particle-3" style="width: 15px; height: 15px; top: 50%; left: 60%; --x: 100px; --y: -200px;"></div>
+    <div class="particle particle-4" style="width: 25px; height: 25px; top: 70%; left: 80%; --x: -100px; --y: -300px;"></div>
+    <div class="particle particle-1" style="width: 20px; height: 20px; top: 80%; left: 10%; --x: 200px; --y: 100px;"></div>
+    <div class="particle particle-2" style="width: 25px; height: 25px; top: 20%; left: 75%; --x: -150px; --y: 400px;"></div>
+    <div class="particle particle-3" style="width: 30px; height: 30px; top: 10%; left: 60%; --x: 300px; --y: -250px;"></div>
 
 </body>
 </html>

@@ -8,9 +8,9 @@ app = Flask(__name__)
 # MySQL connection configuration
 db_config = {
     'user': 'root',
-    'password': 'admin',
+    'password': 'Qweasdqwe123.',
     'host': 'localhost',
-    'database': "test"
+    'database': "database"
 }
 
 # Function to connect to the MySQL database
@@ -665,7 +665,7 @@ def update_event():
     conn.close()
 
     # Redirect back to the events page
-    return "<script>alert('Event added successfully!'); window.location.href='/events';</script>"
+    return "<script>alert('Event updated successfully!'); window.location.href='/events';</script>"
 
 @app.route('/delete_event>', methods=['POST'])
 def delete_event():
