@@ -10,7 +10,7 @@ db_config = {
     'user': 'root',
     'password': 'Qweasdqwe123.',
     'host': 'localhost',
-    'database': "database"
+    'database': "test"
 }
 
 # Function to connect to the MySQL database
@@ -218,24 +218,40 @@ def update_country():
 
     return "<script>alert('Country updated successfully!'); window.location.href='/country';</script>"
 
-@app.route('/medal')
+@app.route('/medal', methods=['GET'])
 def medal():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    # Query to fetch medal data along with athlete names
-    cursor.execute("""
-        SELECT m.*, a.Athlete_name AS Athlete_name
-        FROM medal m
-        JOIN athletes a ON m.Athlete_id = a.Athlete_id
-        ORDER BY a.Athlete_name ASC;
-    """)
+    # Get the search query for Athlete_name from the URL
+    search_query = request.args.get('name')  # None if no query is provided
+    
+    # If search_query exists, apply the filter
+    if search_query:
+        cursor.execute("""
+            SELECT m.*, a.Athlete_name AS Athlete_name
+            FROM medal m
+            JOIN athletes a ON m.Athlete_id = a.Athlete_id
+            WHERE a.Athlete_name LIKE %s
+            ORDER BY a.Athlete_name ASC;
+        """, ('%' + search_query + '%',))
+    else:
+        # No search query, return all medals
+        cursor.execute("""
+            SELECT m.*, a.Athlete_name AS Athlete_name
+            FROM medal m
+            JOIN athletes a ON m.Athlete_id = a.Athlete_id
+            ORDER BY a.Athlete_name ASC;
+        """)
+
     medals = cursor.fetchall()
 
     cursor.close()
     conn.close()
 
     return render_template("medals.html", medals=medals)
+
+
 
 @app.route('/delete_medal>', methods=['POST'])
 def delete_medal():
@@ -415,6 +431,7 @@ def athletes():
     # Retrieve filters from the query parameters
     athlete_id = request.args.get('athletes')
     country_code = request.args.get('country_code')
+    athlete_name = request.args.get('athlete_name')
 
     # Connect to the database
     conn = get_db_connection()
@@ -433,6 +450,9 @@ def athletes():
     if country_code:
         where_clauses.append("Country_code = %s")
         query_params.append(country_code)
+    if athlete_name:
+        where_clauses.append("Athlete_name LIKE %s")
+        query_params.append(f"%{athlete_name}%")  # Use wildcard for partial matches
 
     # Construct WHERE clause if there are filters
     if where_clauses:
@@ -461,8 +481,10 @@ def athletes():
         athletes=athletes,
         page=page,
         total_pages=total_pages,
-        country_code=country_code
+        country_code=country_code,
+        athlete_name=athlete_name
     )
+
 
 @app.route('/delete_athlete>', methods=['POST'])
 def delete_athlete():

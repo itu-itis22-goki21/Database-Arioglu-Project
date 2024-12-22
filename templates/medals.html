@@ -106,6 +106,7 @@
             margin-right: 8px;
             font-size: 18px;
         }
+
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -172,9 +173,17 @@
     <h1>Medal Table</h1>
 
     <!-- Insert Button -->
-    <div style="text-align: center;">
-        <button onclick="openInsertModal()">Insert Medal</button>
+    <div style="text-align: center; margin: 20px; ">
+        <button onclick="openInsertModal()" style="border-radius: 500px; padding: 20px; cursor: pointer;">Insert Medal</button>
     </div>
+
+    <form action="{{ url_for('medal') }}" style="
+    text-align: center; 
+    margin: 20px;" method="get">
+
+        <input type="text" name="name" placeholder="Search by Athlete Name" value="{{ request.args.get('name', '') }}"   style="border-radius: 500px; padding: 20px;">
+        <button type="submit" style="border-radius: 500px; padding: 20px; cursor: pointer;">Search</button>
+    </form>
     
     <!-- Insert Medal Modal -->
     <div class="modal-overlay" id="insert-modal" onclick="closeInsertModal()">
