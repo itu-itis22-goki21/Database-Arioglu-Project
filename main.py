@@ -8,7 +8,7 @@ app = Flask(__name__)
 # MySQL connection configuration
 db_config = {
     'user': 'root',
-    'password': '12345',
+    'password': 'Qweasdqwe123.',
     'host': 'localhost',
     'database': "database"
 }
@@ -641,16 +641,36 @@ def events():
     cursor = conn.cursor(dictionary=True)
 
     event_id = request.args.get('events')
+    search_query = request.args.get('search')
+    discipline_id = request.args.get('discipline')
 
+    sql_query = "SELECT * FROM events_ WHERE 1=1"
+    params = []
+
+    # Filter by event_id if provided
     if event_id:
-        cursor.execute("SELECT * FROM events_ WHERE event_id = %s", (event_id,))
-    else:
-        cursor.execute("SELECT * FROM events_")
+        sql_query += " AND event_id = %s"
+        params.append(event_id)
+
+    # Filter by Event_stage if search_query is provided
+    if search_query:
+        sql_query += " AND Event_stage LIKE %s"
+        params.append('%' + search_query + '%')
+
+    # Filter by Discipline_id if provided
+    if discipline_id:
+        sql_query += " AND Discipline_id = %s"
+        params.append(discipline_id)
+
+    # Execute the query with parameters
+    cursor.execute(sql_query, tuple(params))
     events = cursor.fetchall()
+
     cursor.close()
     conn.close()
     
     return render_template('events.html', events=events)
+
 
 @app.route('/update_event', methods=['POST'])
 def update_event():

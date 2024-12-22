@@ -159,6 +159,22 @@
 
     <h1>Events List</h1>
 
+
+        <div style="text-align: center; margin-bottom: 20px;">
+            <form action="{{ url_for('events') }}" method="get">
+                <input type="text" name="search" placeholder="Search by Event Stage" value="{{ request.args.get('search', '') }}">
+                
+                <select name="discipline" style="margin-left: 10px;">
+                    <option value="">None</option>
+                    {% for i in range(1, 16) %}
+                        <option value="{{ i }}" {% if request.args.get('discipline') == i|string %} selected {% endif %}>{{ i }}</option>
+                    {% endfor %}
+                </select>
+                
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    
         <div style="text-align: center;">
             <button onclick="openModal('insert-modal')">Insert Event</button>
         </div>
