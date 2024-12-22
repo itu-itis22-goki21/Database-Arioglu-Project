@@ -119,6 +119,34 @@
             margin-top: -10px;
             margin-bottom: 20px;
         }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .search-bar input[type="text"] {
+            border: none;
+            outline: none;
+            padding: 10px;
+            font-size: 16px;
+            width: 300px;
+        }
+        .search-bar button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .search-bar button:hover {
+            background-color: #0056b3;
+        }
 
         
     </style>
@@ -147,6 +175,21 @@
     <h1>Athletes List</h1>
     {% if country_code %}
         <p class="country-info">Athletes from <strong>{{ country_code }}</strong></p>
+    {% endif %}
+
+    <form class="search-bar" action="/athletes" method="GET">
+        <input type="text" name="athletes" placeholder="Search Athlete ID">
+        <input type="text" name="country_code" placeholder="Search Country Code">
+        <input type="text" name="athlete_name" placeholder="Search Athlete Name">
+        <button type="submit">Search</button>
+    </form>
+
+    {% if athletes %}
+    <div class="results">
+        
+    </div>
+    {% elif page %}
+    <p>No results found.</p>
     {% endif %}
 
     <div style="text-align: center;">
