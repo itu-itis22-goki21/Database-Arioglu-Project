@@ -8,7 +8,7 @@ app = Flask(__name__)
 # MySQL connection configuration
 db_config = {
     'user': 'root',
-    'password': 'Qweasdqwe123.',
+    'password': '12345',
     'host': 'localhost',
     'database': "database"
 }
@@ -409,43 +409,60 @@ def update_tech():
 def athletes():
     # Get the current page number from the URL, default to page 1
     page = request.args.get('page', 1, type=int)
-    
-    # Set the number of athletes per page
     per_page = 50
-    
-    # Calculate the offset for the query
     offset = (page - 1) * per_page
-    
-    # Connect to the database and retrieve athletes data with pagination
+
+    # Retrieve filters from the query parameters
+    athlete_id = request.args.get('athletes')
+    country_code = request.args.get('country_code')
+
+    # Connect to the database
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    Athlete_id = request.args.get('athletes')
-    Country_code = request.args.get('country_code')
-    cursor.execute("SELECT COUNT(*) FROM athletes")
+
+    # Base query and parameters
+    base_query = "SELECT * FROM athletes"
+    count_query = "SELECT COUNT(*) FROM athletes"
+    where_clauses = []
+    query_params = []
+
+    # Add filters based on query parameters
+    if athlete_id:
+        where_clauses.append("Athlete_id = %s")
+        query_params.append(athlete_id)
+    if country_code:
+        where_clauses.append("Country_code = %s")
+        query_params.append(country_code)
+
+    # Construct WHERE clause if there are filters
+    if where_clauses:
+        where_clause = " WHERE " + " AND ".join(where_clauses)
+        base_query += where_clause
+        count_query += where_clause
+
+    # Get the total count of athletes for pagination
+    cursor.execute(count_query, tuple(query_params))
     total_athletes = cursor.fetchone()['COUNT(*)']
     total_pages = math.ceil(total_athletes / per_page)
-    # Fetch the total count of athletes to calculate total pages
-    if Athlete_id:
-        cursor.execute("SELECT * FROM athletes WHERE Athlete_id = %s", (Athlete_id,))
-    if Country_code:
-        cursor.execute("SELECT * FROM athletes WHERE Country_code = %s", (Country_code,))
-    else:
-        
-    
-        # Fetch athletes for the current page
-        cursor.execute("SELECT * FROM athletes LIMIT %s OFFSET %s", (per_page, offset))
-    
-    
+
+    # Fetch athletes with pagination
+    base_query += " LIMIT %s OFFSET %s"
+    query_params.extend([per_page, offset])
+    cursor.execute(base_query, tuple(query_params))
     athletes = cursor.fetchall()
-    
+
+    # Close database connections
     cursor.close()
     conn.close()
-    
-    # Calculate the total number of pages
-    
-    
-    # Render the athletes page with the current page and total pages
-    return render_template('athletes.html',country_code=Country_code, athletes=athletes, page=page, total_pages=total_pages)
+
+    # Render the athletes page
+    return render_template(
+        'athletes.html',
+        athletes=athletes,
+        page=page,
+        total_pages=total_pages,
+        country_code=country_code
+    )
 
 @app.route('/delete_athlete>', methods=['POST'])
 def delete_athlete():
