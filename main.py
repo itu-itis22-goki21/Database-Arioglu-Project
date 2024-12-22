@@ -8,9 +8,9 @@ app = Flask(__name__)
 # MySQL connection configuration
 db_config = {
     'user': 'root',
-    'password': '12345',
+    'password': 'admin',
     'host': 'localhost',
-    'database': "database"
+    'database': "test"
 }
 
 # Function to connect to the MySQL database
@@ -415,6 +415,7 @@ def athletes():
     # Retrieve filters from the query parameters
     athlete_id = request.args.get('athletes')
     country_code = request.args.get('country_code')
+    athlete_name = request.args.get('athlete_name')
 
     # Connect to the database
     conn = get_db_connection()
@@ -433,6 +434,9 @@ def athletes():
     if country_code:
         where_clauses.append("Country_code = %s")
         query_params.append(country_code)
+    if athlete_name:
+        where_clauses.append("Athlete_name LIKE %s")
+        query_params.append(f"%{athlete_name}%")  # Use wildcard for partial matches
 
     # Construct WHERE clause if there are filters
     if where_clauses:
@@ -461,8 +465,10 @@ def athletes():
         athletes=athletes,
         page=page,
         total_pages=total_pages,
-        country_code=country_code
+        country_code=country_code,
+        athlete_name=athlete_name
     )
+
 
 @app.route('/delete_athlete>', methods=['POST'])
 def delete_athlete():
