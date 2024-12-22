@@ -51,6 +51,24 @@
             color: #ccc;
             font-size: 14px;
         }
+
+        /* Style for the search button */
+        button[type="submit"], .search-button {
+            background-color: #00bfff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover, .search-button:hover {
+            background-color: #009acd;
+        }
+
+        /* Modal Overlay */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -159,21 +177,42 @@
 
     <h1>Events List</h1>
 
+    <!-- Button to open the search modal -->
+    <div style="text-align: center; margin-bottom: 20px;">
+        <button class="search-button" onclick="openModal('search-modal')">Search Events</button>
+    </div>
 
-        <div style="text-align: center; margin-bottom: 20px;">
+    <!-- Search Modal -->
+    <div class="modal-overlay" id="search-modal" onclick="closeModal('search-modal')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-button" onclick="closeModal('search-modal')">&times;</span>
+            <h2>Search Events</h2>
             <form action="{{ url_for('events') }}" method="get">
-                <input type="text" name="search" placeholder="Search by Event Stage" value="{{ request.args.get('search', '') }}">
-                
-                <select name="discipline" style="margin-left: 10px;">
-                    <option value="">None</option>
-                    {% for i in range(1, 16) %}
-                        <option value="{{ i }}" {% if request.args.get('discipline') == i|string %} selected {% endif %}>{{ i }}</option>
-                    {% endfor %}
-                </select>
-                
+                <label for="event-stage">Search by Event Stage:</label>
+                <input type="text" id="event-stage" name="search" placeholder="Event Stage"><br><br>
+                <label for="discipline">Select Discipline:</label>
+                <select name="discipline" id="discipline">
+                    <option value="">Select discipline</option>
+                    <option value="1" {% if request.args.get('discipline') == '1' %} selected {% endif %}>Alpine Skiing</option>
+                    <option value="2" {% if request.args.get('discipline') == '2' %} selected {% endif %}>Biathlon</option>
+                    <option value="3" {% if request.args.get('discipline') == '3' %} selected {% endif %}>Bobsleigh</option>
+                    <option value="4" {% if request.args.get('discipline') == '4' %} selected {% endif %}>Cross-Country Skiing</option>
+                    <option value="5" {% if request.args.get('discipline') == '5' %} selected {% endif %}>Curling</option>
+                    <option value="6" {% if request.args.get('discipline') == '6' %} selected {% endif %}>Figure Skating</option>
+                    <option value="7" {% if request.args.get('discipline') == '7' %} selected {% endif %}>Freestyle Skiing</option>
+                    <option value="8" {% if request.args.get('discipline') == '8' %} selected {% endif %}>Ice Hockey</option>
+                    <option value="9" {% if request.args.get('discipline') == '9' %} selected {% endif %}>Luge</option>
+                    <option value="10" {% if request.args.get('discipline') == '10' %} selected {% endif %}>Nordic Combined</option>
+                    <option value="11" {% if request.args.get('discipline') == '11' %} selected {% endif %}>Short Track Speed Skating</option>
+                    <option value="12" {% if request.args.get('discipline') == '12' %} selected {% endif %}>Skeleton</option>
+                    <option value="13" {% if request.args.get('discipline') == '13' %} selected {% endif %}>Ski Jumping</option>
+                    <option value="14" {% if request.args.get('discipline') == '14' %} selected {% endif %}>Snowboard</option>
+                    <option value="15" {% if request.args.get('discipline') == '15' %} selected {% endif %}>Speed Skating</option>
+                </select><br><br>
                 <button type="submit">Search</button>
             </form>
         </div>
+    </div>
     
         <div style="text-align: center;">
             <button onclick="openModal('insert-modal')">Insert Event</button>
