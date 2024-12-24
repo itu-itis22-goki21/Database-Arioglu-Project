@@ -18,8 +18,11 @@
         }
         .container {
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+            flex-wrap: wrap; /* Allows wrapping if items exceed available space */
+            justify-content: center; /* Horizontally center the items */
+            align-items: center; /* Vertically align items */
+            height: 100vh; /* Ensure full viewport height for vertical centering */
+            gap: 40px;
 
         }
         .official-card {
@@ -100,6 +103,14 @@
             margin-right: 8px;
             font-size: 18px;
         }
+        .uc{
+            border-radius: 500px; padding: 20px; cursor: pointer;
+            transition-duration: 0.3s;
+        }
+        .uc:hover{
+            background-color: #383333;
+            color: white
+        }
     </style>
     <script>
         function openModal(modalId) {
@@ -134,7 +145,7 @@
 
 
     <div style="text-align: center;">
-        <button onclick="openModal('insert-modal')">Insert Official</button>
+        <button onclick="openModal('insert-modal')" class="uc" style="margin: 20px;">Insert Official</button>
     </div>
     
     <div class="modal-overlay" id="insert-modal" onclick="closeModal('insert-modal')">
@@ -165,7 +176,7 @@
                     <option value="Technical Delegate">Technical Delegate</option>
                 </select><br><br>
     
-                <button type="submit">Submit</button>
+                <button type="submit" class="uc">Submit</button>
             </form>
         </div>
     </div>
@@ -207,7 +218,7 @@
                     <option value="Technical Delegate">Technical Delegate</option>
                 </select><br><br>
                     
-                <button type="submit">Submit</button>
+                <button type="submit" class="uc">Submit</button>
                 </form>                
             </div>
         </div>
@@ -224,10 +235,10 @@
                 <p><strong>Discipline:</strong><a href="{{ url_for('discipline') }}?discipline={{ official.Discipline_id }}">{{ official.Discipline_id }}</a> </p>
                 <p><strong>Function:</strong> {{ official.Function }}</p>
                 <div style="text-align: left;">
-                    <button onclick="openUpdateModal('{{ official.Tech_id }}')">Update</button>
+                    <button onclick="openUpdateModal('{{ official.Tech_id }}')" class="uc">Update</button>
                 </div>
                 <form action="{{ url_for('delete_tech') }}?tech={{ official.Tech_id }}" method="post">
-                    <button href="{{ url_for('tech')}}"style="color: red;">Delete</button>
+                    <button href="{{ url_for('tech')}}"style="color: red;" class="uc">Delete</button>
                 </form>
             </div>
         </div>

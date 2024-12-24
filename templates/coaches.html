@@ -18,8 +18,11 @@
         }
         .container {
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+            flex-wrap: wrap; /* Allows wrapping if items exceed available space */
+            justify-content: center; /* Horizontally center the items */
+            align-items: center; /* Vertically align items */
+            height: 100vh; /* Ensure full viewport height for vertical centering */
+            gap: 40px;
         }
         .coach-card {
             border: 1px solid #ddd;
@@ -101,6 +104,14 @@
             margin-right: 8px;
             font-size: 18px;
         }
+        .uc{
+            border-radius: 500px; padding: 20px; cursor: pointer;
+            transition-duration: 0.3s;
+        }
+        .uc:hover{
+            background-color: #383333;
+            color: white
+        }
     </style>
     <script>
         function openModal(modalId) {
@@ -134,7 +145,7 @@
     <h1>Coaches List</h1>
 
     <div style="text-align: center;">
-        <button onclick="openModal('insert-modal')">Insert</button>
+        <button onclick="openModal('insert-modal')" class="uc" style="margin: 20px;">Insert a Coach</button>
     </div>
     
     <div class="modal-overlay" id="insert-modal" onclick="closeModal('insert-modal')">
@@ -164,7 +175,7 @@
                     <option value="Head Coach">Head Coach</option>
                 </select><br><br>
                 
-                <button type="submit">Submit</button>
+                <button type="submit" class="uc">Submit</button>
             </form>
         </div>
     </div>
@@ -197,7 +208,7 @@
                     <label for="function">Function:</label>
                     <input type="text" id="function" name="function" value="{{ coach.Function }}" required><br><br>
 
-                    <button type="submit">Submit</button>
+                    <button type="submit" class="uc">Submit</button>
                 </form>
             </div>
         </div>
@@ -218,10 +229,10 @@
                 <p><strong>Discipline_ID:</strong><a href="{{ url_for('discipline') }}?discipline={{ coach.Discipline_id }}"> {{ coach.Discipline_id }}</a></p>
                 <p><strong>Function:</strong> {{ coach.Function }}</p>
                 <div style="text-align: left;">
-                    <button onclick="openUpdateModal('{{ coach.Coach_id }}')">Update</button>
+                    <button onclick="openUpdateModal('{{ coach.Coach_id }}')" class="uc">Update</button>
                 </div>
                 <form action="{{ url_for('delete_coaches') }}?coaches={{ coach.Coach_id }}" method="post">
-                    <button href="{{ url_for('coaches')}}"style="color: red;">Delete</button>
+                    <button href="{{ url_for('coaches')}}"style="color: red;" class="uc">Delete</button>
 
                 </form>
             </div>

@@ -9,9 +9,13 @@
         /* Flexbox container */
         .container {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: wrap; /* Allows wrapping if items exceed available space */
+            justify-content: center; /* Horizontally center the items */
+            align-items: center; /* Vertically align items */
+            height: 100vh; /* Ensure full viewport height for vertical centering */
             gap: 40px;
         }
+
         h1 {
             text-align: center;
             color: #8c8484;
@@ -106,6 +110,14 @@
             margin-right: 8px;
             font-size: 18px;
         }
+        .uc{
+            border-radius: 500px; padding: 20px; cursor: pointer;
+            transition-duration: 0.3s;
+        }
+        .uc:hover{
+            background-color: #383333;
+            color: white
+        }
 
     </style>
     <script>
@@ -173,8 +185,8 @@
     <h1>Medal Table</h1>
 
     <!-- Insert Button -->
-    <div style="text-align: center; margin: 20px; ">
-        <button onclick="openInsertModal()" style="border-radius: 500px; padding: 20px; cursor: pointer;">Insert Medal</button>
+    <div style="text-align: center; margin: 20px; " >
+        <button onclick="openInsertModal()" class="uc">Insert Medal</button>
     </div>
 
     <form action="{{ url_for('medal') }}" style="
@@ -182,7 +194,7 @@
     margin: 20px;" method="get">
 
         <input type="text" name="name" placeholder="Search by Athlete Name" value="{{ request.args.get('name', '') }}"   style="border-radius: 500px; padding: 20px;">
-        <button type="submit" style="border-radius: 500px; padding: 20px; cursor: pointer;">Search</button>
+        <button type="submit" style="border-radius: 500px; padding: 20px; cursor: pointer;" class="uc">Search</button>
     </form>
     
     <!-- Insert Medal Modal -->
@@ -209,7 +221,7 @@
                 <label for="country-code">Country Code:</label>
                 <input type="text" id="country-code" name="country_code" required><br><br>
     
-                <button type="submit">Submit</button>
+                <button type="submit" class="uc">Submit</button>
             </form>
         </div>
     </div>
@@ -264,10 +276,10 @@
                 <p><strong>Event_ID:</strong><a href="{{ url_for('events') }}?events={{ medal.Event_id }}"> {{ medal.Event_id}}</a></p>
                 <p><strong>Country code:</strong> <a href="{{ url_for('country') }}?country={{ medal.Country_code }}">{{ medal.Country_code }}</a></p>
                 <div style="text-align: left;">
-                    <button onclick="openUpdateModal('{{ loop.index }}')">Update</button>
+                    <button onclick="openUpdateModal('{{ loop.index }}')" class="uc">Update</button>
                 </div>
                 <form action="{{ url_for('delete_medal') }}?medal={{ medal.Medal_id }}" method="post">
-                    <button href="{{ url_for('medal') }}" style="color: red;">Delete</button>
+                    <button href="{{ url_for('medal') }}" style="color: red;" class="uc">Delete</button>
                 </form>
             </div>
         </div>

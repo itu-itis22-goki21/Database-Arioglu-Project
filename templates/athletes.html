@@ -18,8 +18,11 @@
         }
         .container {
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+            flex-wrap: wrap; /* Allows wrapping if items exceed available space */
+            justify-content: center; /* Horizontally center the items */
+            align-items: center; /* Vertically align items */
+            height: 100vh; /* Ensure full viewport height for vertical centering */
+            gap: 50px;
         }
         .coach-card {
             border: 1px solid #ddd;
@@ -192,7 +195,7 @@
     <p>No results found.</p>
     {% endif %}
 
-    <div style="text-align: center;">
+    <div style="text-align: center; margin: 10px;">
         <button onclick="openModal('insert-modal')">Insert Athlete</button>
     </div>
     

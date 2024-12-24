@@ -125,6 +125,14 @@
             margin-right: 8px;
             font-size: 18px;
         }
+        .uc{
+            border-radius: 500px; padding: 20px; cursor: pointer;
+            transition-duration: 0.3s;
+        }
+        .uc:hover{
+            background-color: #383333;
+            color: white
+        }
     </style>
     <script>
         
@@ -179,7 +187,7 @@
 
     <!-- Button to open the search modal -->
     <div style="text-align: center; margin-bottom: 20px;">
-        <button class="search-button" onclick="openModal('search-modal')">Search Events</button>
+        <button class="search-button" onclick="openModal('search-modal')" >Search Events</button>
     </div>
 
     <!-- Search Modal -->
@@ -215,7 +223,7 @@
     </div>
     
         <div style="text-align: center;">
-            <button onclick="openModal('insert-modal')">Insert Event</button>
+            <button onclick="openModal('insert-modal')" class="uc" style="margin: 20px;">Insert Event</button>
         </div>
     
         <div class="modal-overlay" id="insert-modal" onclick="closeModal('insert-modal')">
@@ -233,7 +241,7 @@
                     <input type="text" id="time" name="time" required><br><br>
                     <label for="discipline-id">Discipline ID:</label>
                     <input type="text" id="discipline-id" name="discipline_id" required><br><br>
-                    <button type="submit">Submit</button>
+                    <button type="submit" class="uc">Submit</button>
                 </form>
             </div>
         </div>
@@ -253,7 +261,7 @@
                     <input type="text" id="time" name="time" value="{{ event.Time }}" required><br><br>
                     <label for="discipline">Discipline:</label>
                     <input type="text" id="discipline" name="discipline" value="{{ event.Discipline_id }}" required><br><br>
-                    <button type="submit">Submit</button>
+                    <button type="submit" class="uc">Submit</button>
                 </form>
             </div>
         </div>
@@ -276,10 +284,10 @@
                 <p><strong>Time:</strong> {{ event.Time }}</p>
                 <p><strong>Discipline_ID:</strong><a href="{{ url_for('discipline') }}?discipline={{ event.Discipline_id }}"> {{ event.Discipline_id }}</a></p>
                 <div style="text-align: left;">
-                    <button onclick="openUpdateModal('{{loop.index}}')">Update</button>
+                    <button onclick="openUpdateModal('{{loop.index}}')" class="uc">Update</button>
                 </div>
                 <form action="{{ url_for('delete_event') }}?events={{ event.Event_id }}" method="post">
-                    <button href="{{ url_for('events')}}"style="color: red;">Delete</button>
+                    <button href="{{ url_for('events')}}"style="color: red;" class="uc">Delete</button>
                 </form>
             </div>
         </div>
