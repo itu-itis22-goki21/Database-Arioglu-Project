@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #343a40;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        th {
+            background-color: #343a40;
+            color: #ffffff;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .rank {
+            font-weight: bold;
+            text-align: center;
+        }
+        .return-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #525252f5;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        .return-home:hover {
+            background-color: #858585;
+        }
+
+        .return-home::before {
+            content: '←';
+            margin-right: 8px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <a href="{{ url_for('home') }}" class="return-home">
+        Return to Homepage
+    </a>
+    <h1>Athlete Leaderboard</h1>
+    <table>
+        <thead>
+            <tr>
+                <th class="rank">Rank</th>
+                <th>Athlete Name</th>
+                <th>Medal Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for athlete in statistic %}
+            <tr>
+                <td class="rank">{{ loop.index }}</td>
+                <td>{{ athlete['Athlete_name'] }}</td>
+                <td>{{ athlete['Medal_Count'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

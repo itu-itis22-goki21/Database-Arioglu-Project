@@ -8,9 +8,9 @@ app = Flask(__name__)
 # MySQL connection configuration
 db_config = {
     'user': 'root',
-    'password': 'Qweasdqwe123.',
+    'password': '12345',
     'host': 'localhost',
-    'database': "test"
+    'database': "database"
 }
 
 # Function to connect to the MySQL database
@@ -762,6 +762,39 @@ def insert_event():
 
     # Redirect back to the events page
     return "<script>alert('Event added successfully!'); window.location.href='/events';</script>"
+
+
+@app.route('/statistic', methods=['GET'])
+def statistic():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    # Correctly format the SQL query as a multi-line string
+    query = """
+        SELECT 
+            a.Athlete_id, 
+            a.Athlete_name, 
+            COUNT(m.Medal_id) AS Medal_Count
+        FROM 
+            athletes a 
+        JOIN 
+            medal m ON a.Athlete_id = m.Athlete_id
+        GROUP BY 
+            a.Athlete_id, 
+            a.Athlete_name
+        HAVING 
+            COUNT(m.Medal_id) > 1
+        ORDER BY 
+            Medal_Count DESC;
+    """
+    
+    cursor.execute(query)
+    statistic = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    
+    return render_template('statistic.html', statistic=statistic)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
