@@ -179,7 +179,7 @@
 </head>
 <body>
 
-    <a href="{{ url_for('home') }}" class="return-home">
+    <a href="{{ url_for('main.home') }}" class="return-home">
         Return to Homepage
     </a>
 
@@ -195,7 +195,7 @@
         <div class="modal-content" onclick="event.stopPropagation()">
             <span class="close-button" onclick="closeModal('search-modal')">&times;</span>
             <h2>Search Events</h2>
-            <form action="{{ url_for('events') }}" method="get">
+            <form action="{{ url_for('events.events') }}" method="get">
                 <label for="event-stage">Search by Event Stage:</label>
                 <input type="text" id="event-stage" name="search" placeholder="Event Stage"><br><br>
                 <label for="discipline">Select Discipline:</label>
@@ -230,7 +230,7 @@
             <div class="modal-content" onclick="event.stopPropagation()">
                 <span class="close-button" onclick="closeModal('insert-modal')">&times;</span>
                 <h2>Add a New Event</h2>
-                <form action="{{ url_for('insert_event') }}" method="post">
+                <form action="{{ url_for('events.insert_event') }}" method="post">
                     <label for="event-stage">Event Stage:</label>
                     <input type="text" id="event-stage" name="event_stage" required><br><br>
                     <label for="location">Location:</label>
@@ -250,7 +250,7 @@
             <div class="modal-content" onclick="event.stopPropagation()">
                 <span class="close-button" onclick="closeUpdateModal('{{loop.index}}')">&times;</span>
                 <h2>Update Event</h2>
-                <form action="{{ url_for('update_event')}}?event={{event.Event_id}} " method="post">
+                <form action="{{ url_for('events.update_event')}}?event={{event.Event_id}} " method="post">
                     <label for="event-stage">Event Stage:</label>
                     <input type="text" id="event-stage" name="event_stage" value="{{ event.Event_stage }}" required><br><br>
                     <label for="location">Location:</label>
@@ -282,12 +282,12 @@
                 <p><strong>Location:</strong> {{ event.Location }}</p>
                 <p><strong>Status:</strong> {{ event.Event_status }}</p>
                 <p><strong>Time:</strong> {{ event.Time }}</p>
-                <p><strong>Discipline_ID:</strong><a href="{{ url_for('discipline') }}?discipline={{ event.Discipline_id }}"> {{ event.Discipline_id }}</a></p>
+                <p><strong>Discipline_ID:</strong><a href="{{ url_for('discipline.discipline') }}?discipline={{ event.Discipline_id }}"> {{ event.Discipline_id }}</a></p>
                 <div style="text-align: left;">
                     <button onclick="openUpdateModal('{{loop.index}}')" class="uc">Update</button>
                 </div>
-                <form action="{{ url_for('delete_event') }}?events={{ event.Event_id }}" method="post">
-                    <button href="{{ url_for('events')}}"style="color: red;" class="uc">Delete</button>
+                <form action="{{ url_for('events.delete_event') }}?events={{ event.Event_id }}" method="post">
+                    <button href="{{ url_for('events.events')}}"style="color: red;" class="uc">Delete</button>
                 </form>
             </div>
         </div>

@@ -137,7 +137,7 @@
 </head>
 <body>
     
-    <a href="{{ url_for('home') }}" class="return-home">
+    <a href="{{ url_for('main.home') }}" class="return-home">
         Return to Homepage
     </a>
 
@@ -152,7 +152,7 @@
             <span class="close-button" onclick="closeModal('insert-modal')">&times;</span>
             <h2>Add a Discipline</h2>
             <form 
-                action="{{ url_for('insert_discipline') }}" 
+                action="{{ url_for('discipline.insert_discipline') }}" 
                 method="post">
                 <label for="discipline">Discipline:</label>
                 <input type="text" id="discipline" name="discipline" required><br><br>
@@ -179,7 +179,7 @@
             <div class="modal-content" onclick="event.stopPropagation()">
                 <span class="close-button" onclick="closeUpdateModal('{{ discipline.Discipline_id }}')">&times;</span>
                 <h2>Update This Discipline</h2>
-                <form action="{{ url_for('update_discipline') }}" method="post">
+                <form action="{{ url_for('discipline.update_discipline') }}" method="post">
                 <input type="hidden" name="discipline_id" value="{{ discipline.Discipline_id }}">
                 
                 <label for="discipline">Discipline:</label>
@@ -208,8 +208,8 @@
                 <div style="text-align: left;">
                     <button onclick="openUpdateModal('{{ discipline.Discipline_id }}')" class="uc">Update</button>
                 </div>
-                <form action="{{ url_for('delete_discipline') }}?discipline={{ discipline.Discipline_id }}" method="post">
-                    <button href="{{ url_for('discipline')}}"style="color: red;" class="uc">Delete</button>
+                <form action="{{ url_for('discipline.delete_discipline') }}?discipline={{ discipline.Discipline_id }}" method="post">
+                    <button href="{{ url_for('discipline.discipline')}}"style="color: red;" class="uc">Delete</button>
                 </form>
             </div>
         </div>

@@ -137,7 +137,7 @@
 </head>
 <body>
 
-    <a href="{{ url_for('home') }}" class="return-home">
+    <a href="{{ url_for('main.home') }}" class="return-home">
         Return to Homepage
     </a>
 
@@ -152,7 +152,7 @@
         <div class="modal-content" onclick="event.stopPropagation()">
             <span class="close-button" onclick="closeModal('insert-modal')">&times;</span>
             <h2>Add an Official</h2>
-            <form action="{{ url_for('insert_tech') }}" method="post">
+            <form action="{{ url_for('tech.insert_tech') }}" method="post">
                 <label for="tech-name">Official Name:</label>
                 <input type="text" id="tech-name" name="tech_name" required><br><br>
     
@@ -192,7 +192,7 @@
             <div class="modal-content" onclick="event.stopPropagation()">
                 <span class="close-button" onclick="closeUpdateModal('{{ official.Tech_id }}')">&times;</span>
                 <h2>Update This Official</h2>
-                <form action="{{ url_for('update_tech') }}" method="post">
+                <form action="{{ url_for('tech.update_tech') }}" method="post">
                 <input type="hidden" name="tech_id" value="{{ official.Tech_id }}">
                 
                 <label for="tech-name">Official Name:</label>
@@ -231,14 +231,14 @@
                 <p><strong>Name:</strong> {{ official.Tech_name }}</p>
                 <p><strong>Gender:</strong> {{ official.Gender }}</p>
                 <p><strong>Birth Date:</strong> {{ official.Birth_date }}</p>
-                <p><strong>Country Code:</strong><a href="{{ url_for('country') }}?country={{ official.Country_code }}"> {{ official.Country_code }}</a></p>
-                <p><strong>Discipline:</strong><a href="{{ url_for('discipline') }}?discipline={{ official.Discipline_id }}">{{ official.Discipline_id }}</a> </p>
+                <p><strong>Country Code:</strong><a href="{{ url_for('country.country') }}?country={{ official.Country_code }}"> {{ official.Country_code }}</a></p>
+                <p><strong>Discipline:</strong><a href="{{ url_for('discipline.discipline') }}?discipline={{ official.Discipline_id }}">{{ official.Discipline_id }}</a> </p>
                 <p><strong>Function:</strong> {{ official.Function }}</p>
                 <div style="text-align: left;">
                     <button onclick="openUpdateModal('{{ official.Tech_id }}')" class="uc">Update</button>
                 </div>
-                <form action="{{ url_for('delete_tech') }}?tech={{ official.Tech_id }}" method="post">
-                    <button href="{{ url_for('tech')}}"style="color: red;" class="uc">Delete</button>
+                <form action="{{ url_for('tech.delete_tech') }}?tech={{ official.Tech_id }}" method="post">
+                    <button href="{{ url_for('tech.tech')}}"style="color: red;" class="uc">Delete</button>
                 </form>
             </div>
         </div>

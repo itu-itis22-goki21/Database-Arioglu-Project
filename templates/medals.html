@@ -178,7 +178,7 @@
 </head>
 <body>
 
-    <a href="{{ url_for('home') }}" class="return-home">
+    <a href="{{ url_for('main.home') }}" class="return-home">
         Return to Homepage
     </a>
 
@@ -189,7 +189,7 @@
         <button onclick="openInsertModal()" class="uc">Insert Medal</button>
     </div>
 
-    <form action="{{ url_for('medal') }}" style="
+    <form action="{{ url_for('medal.medal') }}" style="
     text-align: center; 
     margin: 20px;" method="get">
 
@@ -198,7 +198,6 @@
             <option value="Athlete_name">Sort by Athlete Name</option>
             <option value="Country_code">Sort by Country Code</option>
             <option value="Medal_code">Sort by Medal Type</option>
-
         </select>
         <button type="submit" style="border-radius: 500px; padding: 20px; cursor: pointer;" class="uc">Search</button>
     </form>
@@ -208,7 +207,7 @@
         <div class="modal-content" onclick="event.stopPropagation()">
             <span class="close-button" onclick="closeInsertModal()">&times;</span>
             <h2>Add a Medal</h2>
-            <form action="{{ url_for('insert_medal') }}" method="post">
+            <form action="{{ url_for('medal.insert_medal') }}" method="post">
                 <label for="medal-type">Medal Type:</label>
                 <input type="text" id="medal-type" name="medal_type" required><br><br>
     
@@ -237,7 +236,7 @@
         <div class="modal-content" onclick="event.stopPropagation()">
             <span class="close-button" onclick="closeUpdateModal('{{ loop.index }}')">&times;</span>
             <h2>Update This Medal</h2>
-            <form action="{{ url_for('update_medal') }}?medal={{ medal.Medal_id }}" method="post">
+            <form action="{{ url_for('medal.update_medal') }}?medal={{ medal.Medal_id }}" method="post">
                 <label for="medal-type">Medal Type:</label>
                 <input type="text" id="medal-type" name="medal_type" value="{{ medal.Medal_type }}" required><br><br>
         
@@ -276,16 +275,16 @@
                 <p><strong>Medal Type:</strong> {{ medal.Medal_type }}</p>
                 <p><strong>Code:</strong> {{ medal.Medal_code }}</p>
                 <p><strong>Athlete Name:</strong> {{ medal.Athlete_name }}</p>
-                <p><strong>Athlete ID:</strong><a href="{{ url_for('athletes') }}?athletes={{ medal.Athlete_id }}"> {{medal.Athlete_id}}</a></p>
+                <p><strong>Athlete ID:</strong><a href="{{ url_for('athletes.athletes') }}?athletes={{ medal.Athlete_id }}"> {{medal.Athlete_id}}</a></p>
                 <p><strong>Gender:</strong> {{ medal.Athlete_sex }}</p>
                 <p><strong>Date:</strong> {{ medal.Medal_date }}</p>
-                <p><strong>Event_ID:</strong><a href="{{ url_for('events') }}?events={{ medal.Event_id }}"> {{ medal.Event_id}}</a></p>
-                <p><strong>Country code:</strong> <a href="{{ url_for('country') }}?country={{ medal.Country_code }}">{{ medal.Country_code }}</a></p>
+                <p><strong>Event_ID:</strong><a href="{{ url_for('events.events') }}?events={{ medal.Event_id }}"> {{ medal.Event_id}}</a></p>
+                <p><strong>Country code:</strong> <a href="{{ url_for('country.country') }}?country={{ medal.Country_code }}">{{ medal.Country_code }}</a></p>
                 <div style="text-align: left;">
                     <button onclick="openUpdateModal('{{ loop.index }}')" class="uc">Update</button>
                 </div>
-                <form action="{{ url_for('delete_medal') }}?medal={{ medal.Medal_id }}" method="post">
-                    <button href="{{ url_for('medal') }}" style="color: red;" class="uc">Delete</button>
+                <form action="{{ url_for('medal.delete_medal') }}?medal={{ medal.Medal_id }}" method="post">
+                    <button href="{{ url_for('medal.medal') }}" style="color: red;" class="uc">Delete</button>
                 </form>
             </div>
         </div>

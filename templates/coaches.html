@@ -138,7 +138,7 @@
 </head>
 <body>
 
-    <a href="{{ url_for('home') }}" class="return-home">
+    <a href="{{ url_for('main.home') }}" class="return-home">
         Return to Homepage
     </a>
     
@@ -152,7 +152,7 @@
         <div class="modal-content" onclick="event.stopPropagation()">
             <span class="close-button" onclick="closeModal('insert-modal')">&times;</span>
             <h2>Add a Coach</h2>
-            <form action="{{ url_for('insert_coach') }}" method="post">
+            <form action="{{ url_for('coaches.insert_coach') }}" method="post">
                 <label for="coach-name">Name:</label>
                 <input type="text" id="coach-name" name="name" required><br><br>
 
@@ -187,7 +187,7 @@
             <div class="modal-content" onclick="event.stopPropagation()">
                 <span class="close-button" onclick="closeUpdateModal('{{ coach.Coach_id }}')">&times;</span>
                 <h2>Update This Coach</h2>
-                <form action="{{ url_for('update_coach') }}" method="post">
+                <form action="{{ url_for('coaches.update_coach') }}" method="post">
                     <input type="hidden" name="coach_id" value="{{ coach.Coach_id }}">
 
                     <label for="coach-name">Name:</label>   
@@ -225,14 +225,14 @@
                 <p><strong>Name:</strong> {{ coach.Coach_name }}</p>
                 <p><strong>Gender:</strong> {{ coach.Gender }}</p>
                 <p><strong>Birth Date:</strong> {{ coach.Birth_date }}</p>
-                <p><strong>Country:</strong> <a href="{{ url_for('country') }}?country={{ coach.Country_code }}">{{ coach.Country_code }}</a></p>
-                <p><strong>Discipline_ID:</strong><a href="{{ url_for('discipline') }}?discipline={{ coach.Discipline_id }}"> {{ coach.Discipline_id }}</a></p>
+                <p><strong>Country:</strong> <a href="{{ url_for('country.country') }}?country={{ coach.Country_code }}">{{ coach.Country_code }}</a></p>
+                <p><strong>Discipline_ID:</strong><a href="{{ url_for('discipline.discipline') }}?discipline={{ coach.Discipline_id }}"> {{ coach.Discipline_id }}</a></p>
                 <p><strong>Function:</strong> {{ coach.Function }}</p>
                 <div style="text-align: left;">
                     <button onclick="openUpdateModal('{{ coach.Coach_id }}')" class="uc">Update</button>
                 </div>
-                <form action="{{ url_for('delete_coaches') }}?coaches={{ coach.Coach_id }}" method="post">
-                    <button href="{{ url_for('coaches')}}"style="color: red;" class="uc">Delete</button>
+                <form action="{{ url_for('coaches.delete_coaches') }}?coaches={{ coach.Coach_id }}" method="post">
+                    <button href="{{ url_for('coaches.coaches')}}"style="color: red;" class="uc">Delete</button>
 
                 </form>
             </div>
