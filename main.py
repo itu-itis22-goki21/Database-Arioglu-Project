@@ -8,7 +8,7 @@ app = Flask(__name__)
 # MySQL connection configuration
 db_config = {
     'user': 'root',
-    'password': '12345',
+    'password': 'Qweasdqwe123.',
     'host': 'localhost',
     'database': "database"
 }
@@ -769,11 +769,18 @@ def statistic():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    # Correctly format the SQL query as a multi-line string
     query = """
         SELECT 
             a.Athlete_id, 
             a.Athlete_name, 
+            SUM(
+                CASE 
+                    WHEN m.Medal_type = 'Gold' THEN 3
+                    WHEN m.Medal_type = 'Silver' THEN 2
+                    WHEN m.Medal_type = 'Bronze' THEN 1
+                    ELSE 0
+                END
+            ) AS Medal_Points,
             COUNT(m.Medal_id) AS Medal_Count
         FROM 
             athletes a 
@@ -783,9 +790,9 @@ def statistic():
             a.Athlete_id, 
             a.Athlete_name
         HAVING 
-            COUNT(m.Medal_id) > 1
+            Medal_Points > 0
         ORDER BY 
-            Medal_Count DESC;
+            Medal_Points DESC, Medal_Count DESC;
     """
     
     cursor.execute(query)

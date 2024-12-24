@@ -74,6 +74,7 @@
             <tr>
                 <th class="rank">Rank</th>
                 <th>Athlete Name</th>
+                <th>Medal Points</th>
                 <th>Medal Count</th>
             </tr>
         </thead>
@@ -82,6 +83,7 @@
             <tr>
                 <td class="rank">{{ loop.index }}</td>
                 <td>{{ athlete['Athlete_name'] }}</td>
+                <td>{{ athlete['Medal_Points'] }}</td>
                 <td>{{ athlete['Medal_Count'] }}</td>
             </tr>
             {% endfor %}
