@@ -8,9 +8,9 @@ app = Flask(__name__)
 # MySQL connection configuration
 db_config = {
     'user': 'root',
-    'password': 'Qweasdqwe123.',
+    'password': 'admin',
     'host': 'localhost',
-    'database': "database"
+    'database': "test"
 }
 
 # Function to connect to the MySQL database
@@ -27,11 +27,12 @@ def home():
 
 
 
-@app.route('/coaches')
+@app.route('/coaches', methods=['GET'])
 def coaches():
     # Connect to the database and retrieve coaches data
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
+    
     cursor.execute("SELECT * FROM coaches")
     coaches = cursor.fetchall()
     cursor.close()
@@ -223,33 +224,44 @@ def medal():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    # Get the search query for Athlete_name from the URL
+    # Get the search query and sort_by parameters from the URL
     search_query = request.args.get('name')  # None if no query is provided
-    
-    # If search_query exists, apply the filter
-    if search_query:
-        cursor.execute("""
-            SELECT m.*, a.Athlete_name AS Athlete_name
-            FROM medal m
-            JOIN athletes a ON m.Athlete_id = a.Athlete_id
-            WHERE a.Athlete_name LIKE %s
-            ORDER BY a.Athlete_name ASC;
-        """, ('%' + search_query + '%',))
-    else:
-        # No search query, return all medals
-        cursor.execute("""
-            SELECT m.*, a.Athlete_name AS Athlete_name
-            FROM medal m
-            JOIN athletes a ON m.Athlete_id = a.Athlete_id
-            ORDER BY a.Athlete_name ASC;
-        """)
+    sort_by = request.args.get('sort_by', 'Athlete_name')  # Default sorting by Athlete_name
 
+    # Validate the sort_by parameter to prevent SQL injection
+    valid_sort_columns = {'Athlete_name', 'Medal_code', 'Country_code'}
+    if sort_by not in valid_sort_columns:
+        sort_by = 'Athlete_name'
+    
+    # Base query
+    base_query = """
+        SELECT m.*, a.Athlete_name AS Athlete_name
+        FROM medal m
+        JOIN athletes a ON m.Athlete_id = a.Athlete_id
+    """
+    query_params = []
+
+    # Add search filter if search_query exists
+    if search_query:
+        base_query += " WHERE a.Athlete_name LIKE %s"
+        query_params.append('%' + search_query + '%')
+
+    # Add ORDER BY clause for sorting
+    if sort_by == 'Medal_code':
+        base_query += f" ORDER BY {sort_by} ASC"
+    else:
+        base_query += f" ORDER BY {sort_by} ASC"
+
+    # Execute the query
+    cursor.execute(base_query, tuple(query_params))
     medals = cursor.fetchall()
 
+    # Close database connections
     cursor.close()
     conn.close()
 
     return render_template("medals.html", medals=medals)
+
 
 
 
@@ -428,10 +440,16 @@ def athletes():
     per_page = 50
     offset = (page - 1) * per_page
 
-    # Retrieve filters from the query parameters
+    # Retrieve filters and sorting from the query parameters
     athlete_id = request.args.get('athletes')
     country_code = request.args.get('country_code')
     athlete_name = request.args.get('athlete_name')
+    sort_by = request.args.get('sort_by', 'Athlete_id')  # Default to sort by Athlete_id
+
+    # Validate the sort_by input to prevent SQL injection
+    valid_sort_columns = {'Athlete_id', 'Country_code', 'Athlete_name', 'Discipline_id'}
+    if sort_by not in valid_sort_columns:
+        sort_by = 'Athlete_id'
 
     # Connect to the database
     conn = get_db_connection()
@@ -465,6 +483,9 @@ def athletes():
     total_athletes = cursor.fetchone()['COUNT(*)']
     total_pages = math.ceil(total_athletes / per_page)
 
+    # Add ORDER BY clause for sorting
+    base_query += f" ORDER BY {sort_by}"
+
     # Fetch athletes with pagination
     base_query += " LIMIT %s OFFSET %s"
     query_params.extend([per_page, offset])
@@ -484,6 +505,7 @@ def athletes():
         country_code=country_code,
         athlete_name=athlete_name
     )
+
 
 
 @app.route('/delete_athlete>', methods=['POST'])

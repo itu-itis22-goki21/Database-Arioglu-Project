@@ -138,6 +138,13 @@
             font-size: 16px;
             width: 300px;
         }
+        .search-bar select{
+            border: none;
+            outline: none;
+            padding: 10px;
+            font-size: 16px;
+            width: 300px;
+        }
         .search-bar button {
             background-color: #007bff;
             color: #fff;
@@ -146,6 +153,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            margin-left: 10px;
         }
         .search-bar button:hover {
             background-color: #0056b3;
@@ -184,7 +192,13 @@
         <input type="text" name="athletes" placeholder="Search Athlete ID">
         <input type="text" name="country_code" placeholder="Search Country Code">
         <input type="text" name="athlete_name" placeholder="Search Athlete Name">
+        <select name="sort_by" aria-label="Sort by">
+            <option value="Athlete_name">Sort by Athlete Name</option>
+            <option value="Country_code">Sort by Country Code</option>
+            <option value="Discipline_id">Sort by Discipline ID</option>
+        </select>
         <button type="submit">Search</button>
+        
     </form>
 
     {% if athletes %}
@@ -277,6 +291,7 @@
                 <p><strong>Birth Country:</strong> {{ athlete.Birth_country }}</p>
                 <p><strong>Country Code:</strong> <a href="{{ url_for('country') }}?country={{ athlete.Country_code }}">{{ athlete.Country_code }}</a></p>
                 <p><strong>Discipline_ID:</strong> <a href="{{ url_for('discipline') }}?discipline={{ athlete.Discipline_id }}">{{ athlete.Discipline_id}}</a></p>
+                
                 <div style="text-align: left;">
                     <button onclick="closeModal('modal-{{loop.index}}');openModal('update-{{ loop.index }}')">Update</button>
                 </div>
