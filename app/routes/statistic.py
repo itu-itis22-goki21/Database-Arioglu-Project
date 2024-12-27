@@ -49,6 +49,22 @@ def statistic():
             ORDER BY 
                 Medal_Count DESC;
         """
+    elif filter_type == 'discipline_medals':
+        query = """
+            SELECT 
+                d.Discipline AS Discipline,
+                COUNT(m.Medal_id) AS Medal_Count
+            FROM 
+                discipline d
+            JOIN 
+                athletes a ON d.Discipline_id = a.Discipline_id
+            JOIN 
+                medal m ON a.Athlete_id = m.Athlete_id
+            GROUP BY 
+                d.Discipline
+            ORDER BY 
+                Medal_Count DESC;
+        """
     cursor.execute(query)
     statistic = cursor.fetchall()
     cursor.close()

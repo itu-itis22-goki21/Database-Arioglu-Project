@@ -64,6 +64,7 @@ def delete_medal():
 def insert_medal():
     # Retrieve form data
     Medal_type = request.form.get('medal_type')
+    Athlete_id = request.form.get('athlete_id')
     Medal_code = request.form.get('medal_code')
     Athlete_sex = request.form.get('athlete_sex')
     Event_id = request.form.get('event_id')
@@ -76,10 +77,10 @@ def insert_medal():
 
     # Insert data into the database
     query = """
-    INSERT INTO medal (Medal_type, Medal_code, Athlete_sex, Event_id, Country_code)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+    INSERT INTO medal (Medal_type, Medal_code, Athlete_sex, Event_id, Country_code, Medal_date, Athlete_id)
+    VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
-    cursor.execute(query, (Medal_type, Medal_code, Athlete_sex, Event_id, Medal_date, Country_code))
+    cursor.execute(query, (Medal_type, Medal_code, Athlete_sex, Event_id, Country_code, Medal_date, Athlete_id))
     conn.commit()
 
     # Close the database connection

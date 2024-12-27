@@ -94,6 +94,7 @@
         <select name="filter" id="filter">
             <option value="medal_points" {% if filter == "medal_points" %}selected{% endif %}>Statistics for Medal Points</option>
             <option value="medal_count" {% if filter == "medal_count" %}selected{% endif %}>Statistics for Medal Count</option>
+            <option value="discipline_medals" {% if filter == "discipline_medals" %}selected{% endif %}>Statistics for Discipline Medals</option>
         </select>
         <button type="submit">Filter</button>
     </form>
@@ -101,17 +102,26 @@
         <thead>
             <tr>
                 <th class="rank">Rank</th>
+                {% if filter == 'discipline_medals' %}
+                <th>Discipline</th>
+                {% else %}
                 <th>Athlete Name</th>
                 {% if filter == 'medal_points' %}
                 <th>Medal Points</th>
                 {% elif filter == 'medal_count' %}
                 <th>Medal Count</th>
                 {% endif %}
+                {% endif %}
+
             </tr>
         </thead>
         <tbody>
             {% for item in statistic %}
             <tr>
+                {% if filter == 'discipline_medals' %}
+                <td>{{ item['Discipline'] }}</td>
+                <td>{{ item['Medal_Count'] }}</td>
+                {% else %}
                 <td class="rank">{{ loop.index }}</td>
                 <td>{{ item['Athlete_name'] }}</td>
                 {% if filter == 'medal_points' %}
@@ -119,6 +129,8 @@
                 {% elif filter == 'medal_count' %}
                 <td>{{ item['Medal_Count'] }}</td>
                 {% endif %}
+                {% endif %}
+
             </tr>
             {% endfor %}
         </tbody>
