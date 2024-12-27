@@ -10,6 +10,7 @@ def medal():
 
     # Get the search query and sort_by parameters from the URL
     search_query = request.args.get('name')  # None if no query is provided
+    search_query2= request.args.get('id')
     sort_by = request.args.get('sort_by', 'Athlete_name')  # Default sorting by Athlete_name
 
     # Validate the sort_by parameter to prevent SQL injection
@@ -29,7 +30,9 @@ def medal():
     if search_query:
         base_query += " WHERE a.Athlete_name LIKE %s"
         query_params.append('%' + search_query + '%')
-
+    if search_query2:
+        base_query += " WHERE a.Athlete_id = %s"
+        query_params.append( search_query2)
     # Add ORDER BY clause for sorting
     if sort_by == 'Medal_code':
         base_query += f" ORDER BY {sort_by} ASC"

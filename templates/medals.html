@@ -194,6 +194,7 @@
     margin: 20px;" method="get">
 
         <input type="text" name="name" placeholder="Search by Athlete Name" value="{{ request.args.get('name', '') }}"   style="border-radius: 500px; padding: 20px;">
+        <input type="text" name="id" placeholder="Search by Athlete ID" value="{{ request.args.get('id', '') }}"   style="border-radius: 500px; padding: 20px;">
         <select class="uc" name="sort_by" aria-label="Sort by">
             <option value="Athlete_name">Sort by Athlete Name</option>
             <option value="Country_code">Sort by Country Code</option>
