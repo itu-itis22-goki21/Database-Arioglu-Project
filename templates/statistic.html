@@ -15,6 +15,26 @@
             text-align: center;
             color: #343a40;
         }
+        .filter-form {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .filter-form select, .filter-form button {
+            padding: 10px 15px;
+            font-size: 16px;
+            margin: 0 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background-color: #ffffff;
+        }
+        .filter-form button {
+            background-color: #343a40;
+            color: #ffffff;
+            cursor: pointer;
+        }
+        .filter-form button:hover {
+            background-color: #525252;
+        }
         table {
             width: 80%;
             margin: 20px auto;
@@ -69,22 +89,36 @@
         Return to Homepage
     </a>
     <h1>Athlete Leaderboard</h1>
+    <form class="filter-form" method="GET" action="{{ url_for('statistic.statistic') }}">
+        <label for="filter">Select Statistic:</label>
+        <select name="filter" id="filter">
+            <option value="medal_points" {% if filter == "medal_points" %}selected{% endif %}>Statistics for Medal Points</option>
+            <option value="medal_count" {% if filter == "medal_count" %}selected{% endif %}>Statistics for Medal Count</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
     <table>
         <thead>
             <tr>
                 <th class="rank">Rank</th>
                 <th>Athlete Name</th>
+                {% if filter == 'medal_points' %}
                 <th>Medal Points</th>
+                {% elif filter == 'medal_count' %}
                 <th>Medal Count</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
-            {% for athlete in statistic %}
+            {% for item in statistic %}
             <tr>
                 <td class="rank">{{ loop.index }}</td>
-                <td>{{ athlete['Athlete_name'] }}</td>
-                <td>{{ athlete['Medal_Points'] }}</td>
-                <td>{{ athlete['Medal_Count'] }}</td>
+                <td>{{ item['Athlete_name'] }}</td>
+                {% if filter == 'medal_points' %}
+                <td>{{ item['Medal_Points'] }}</td>
+                {% elif filter == 'medal_count' %}
+                <td>{{ item['Medal_Count'] }}</td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>
