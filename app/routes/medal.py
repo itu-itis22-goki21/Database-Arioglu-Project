@@ -10,11 +10,11 @@ def medal():
 
     # Get the search query and sort_by parameters from the URL
     search_query = request.args.get('name')  # None if no query is provided
-    search_query2= request.args.get('id')
+    search_query2 = request.args.get('id')
     sort_by = request.args.get('sort_by', 'Athlete_name')  # Default sorting by Athlete_name
 
     # Validate the sort_by parameter to prevent SQL injection
-    valid_sort_columns = {'Athlete_name', 'Medal_code', 'Country_code'}
+    valid_sort_columns = {'Athlete_name', 'Medal_code', 'Country_code', 'Athlete_id'}
     if sort_by not in valid_sort_columns:
         sort_by = 'Athlete_name'
     
@@ -25,19 +25,22 @@ def medal():
         JOIN athletes a ON m.Athlete_id = a.Athlete_id
     """
     query_params = []
+    filters = []
 
-    # Add search filter if search_query exists
+    # Add search filters if parameters exist
     if search_query:
-        base_query += " WHERE a.Athlete_name LIKE %s"
+        filters.append("a.Athlete_name LIKE %s")
         query_params.append('%' + search_query + '%')
     if search_query2:
-        base_query += " WHERE a.Athlete_id = %s"
-        query_params.append( search_query2)
+        filters.append("a.Athlete_id = %s")
+        query_params.append(search_query2)
+    
+    # Combine filters using AND
+    if filters:
+        base_query += " WHERE " + " AND ".join(filters)
+    
     # Add ORDER BY clause for sorting
-    if sort_by == 'Medal_code':
-        base_query += f" ORDER BY {sort_by} ASC"
-    else:
-        base_query += f" ORDER BY {sort_by} ASC"
+    base_query += f" ORDER BY {sort_by} ASC"
 
     # Execute the query
     cursor.execute(base_query, tuple(query_params))
@@ -48,6 +51,7 @@ def medal():
     conn.close()
 
     return render_template("medals.html", medals=medals)
+
 
 
 
