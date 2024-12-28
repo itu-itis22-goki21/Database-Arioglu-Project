@@ -8,11 +8,16 @@ from app.routes.discipline import discipline_bp
 from app.routes.events import events_bp
 from app.routes.statistic import statistic_bp
 from app.routes import main_bp
+from app.routes.login import  login_bp
+import os
 
 def create_app():
     app = Flask(__name__, template_folder='../templates')
+
+    app.secret_key = os.urandom(24)
     
     # Register blueprints
+    app.register_blueprint(login_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(coaches_bp, url_prefix='/coaches')
     app.register_blueprint(country_bp, url_prefix='/country')

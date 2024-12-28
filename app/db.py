@@ -2,9 +2,9 @@ import mysql.connector
 
 db_config = {
     'user': 'root',
-    'password': 'admin',
+    'password': '12345',
     'host': 'localhost',
-    'database': "test"
+    'database': "database"
 }
 
 def get_db_connection():
